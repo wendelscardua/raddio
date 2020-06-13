@@ -71,6 +71,10 @@ notes_source_ptr_h: .res 1
   STA notes_queue_tail
   
   ; increment note source ptr
+  INC notes_source_ptr
+  BNE :+
+  INC notes_source_ptr+1
+:
   RTS
 .endproc
 
