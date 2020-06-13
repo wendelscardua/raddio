@@ -1,5 +1,6 @@
 .include "constants.inc"
 .include "header.inc"
+.include "notes_queue.inc"
 
 .feature force_range
 
@@ -75,6 +76,12 @@ oam_sprites:
 .importzp pressed_buttons
 .importzp rle_ptr
 
+.importzp notes_queue
+.importzp notes_queue_head
+.importzp notes_queue_tail
+.importzp notes_source_ptr_l
+.importzp notes_source_ptr_h
+
 ; zp vars
 addr_ptr: .res 2 ; generic address pointer
 ppu_addr_ptr: .res 2 ; temporary address for PPU_ADDR
@@ -97,6 +104,12 @@ sprite_counter: .res 1
 .import reset_handler
 .import readjoy
 .import unrle
+
+.import NotesQueueInit
+.import NotesQueueEmpty
+.import NotesQueueFull
+.import NotesQueuePush
+.import NotesQueuePop
 
 .import music_data
 .import sfx_data

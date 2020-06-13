@@ -10,7 +10,8 @@ TARGET=${PROJECT}.nes
 
 default: ${TARGET}
 
-${TARGET}: src/${PROJECT}.o src/reset.o src/readjoy.o src/unrle.o src/audio-data.o
+${TARGET}: src/${PROJECT}.o src/reset.o src/readjoy.o src/unrle.o src/audio-data.o \
+		src/notes_queue.o
 	ld65 $^ -t nes -o ${TARGET} ${LD65_FLAGS}
 
 debug: LD65_FLAGS += -Ln labels.txt --dbgfile ${PROJECT}.nes.dbg
