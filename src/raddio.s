@@ -202,6 +202,18 @@ clear_ram:
 
   VBLANK
 
+  LDA PPUSTATUS
+  LDA #$20
+  STA PPUADDR
+  LDA #$00
+  STA PPUADDR
+
+  LDA #<nametable_main
+  STA rle_ptr
+  LDA #>nametable_main
+  STA rle_ptr+1
+  JSR unrle
+
   LDA #%10010000  ; turn on NMIs, sprites use first pattern table
   STA PPUCTRL
   LDA #%00011110  ; turn on screen
