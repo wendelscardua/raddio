@@ -393,6 +393,17 @@ palettes:
 sprites:
 .include "../assets/metasprites.s"
 
+note_sprites_l:
+  .byte <metasprite_0_data
+  .byte <metasprite_0_data
+  .byte <metasprite_0_data
+  .byte <metasprite_0_data
+note_sprites_h:
+  .byte >metasprite_0_data
+  .byte >metasprite_0_data
+  .byte >metasprite_0_data
+  .byte >metasprite_0_data
+
 strings:
         ; TODO put strings here if needed
 
