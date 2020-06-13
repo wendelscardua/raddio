@@ -78,7 +78,6 @@ oam_sprites:
 ; zp vars
 addr_ptr: .res 2 ; generic address pointer
 ppu_addr_ptr: .res 2 ; temporary address for PPU_ADDR
-palette_ptr: .res 2 ; pointer to palettes
 
 temp_x: .res 1
 temp_y: .res 1
@@ -225,7 +224,6 @@ etc:
 .endproc
 
 .proc load_palettes
-  ; input: palette_ptr points to palettes
   ; cobbles Y
   LDY PPUSTATUS
   LDY #$3f
@@ -233,7 +231,7 @@ etc:
   LDY #$00
   STY PPUADDR
 :
-  LDA (palette_ptr),Y
+  LDA palettes,Y
   STA PPUDATA
   INY
   CPY #$20
