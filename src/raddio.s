@@ -96,6 +96,8 @@ game_state: .res 1
 
 sprite_counter: .res 1
 
+selected_song: .res 1
+
 .segment "BSS"
 ; non-zp RAM goes here
 
@@ -111,7 +113,8 @@ sprite_counter: .res 1
 .import NotesQueuePush
 .import NotesQueuePop
 
-.import music_data
+.import music_data_l
+.import music_data_h
 .import sfx_data
 
 .macro KIL ; pseudo instruction to kill the program
@@ -219,21 +222,10 @@ clear_ram:
   LDA #%00011110  ; turn on screen
   STA PPUMASK
 
-  LDX music_track::BadApple
-  LDA music_data+1, X
-  TAY
-  LDA music_data, X
-  TAX
-  LDA #1
-  JSR FamiToneInit
-
-  LDX #<sfx_data
-  LDY #>sfx_data
-  LDA #1
-  JSR FamiToneSfxInit
-
   LDA #$00
-  JSR FamiToneMusicPlay
+  STA selected_song
+
+  JSR play_selected_song
 
 forever:
   LDA nmis
@@ -342,6 +334,35 @@ exit:
   RTS
 .endproc
 
+.proc play_selected_song
+  LDX selected_song
+  LDA music_data_h, X
+  TAY
+  LDA music_data_l, X
+  TAX
+  LDA #1
+  JSR FamiToneInit
+
+  LDX #<sfx_data
+  LDY #>sfx_data
+  LDA #1
+  JSR FamiToneSfxInit
+
+  LDA #$00
+  JSR FamiToneMusicPlay
+
+  LDX selected_song
+  LDA music_notes_data_pointers_l, X
+  STA notes_source_ptr_l
+  LDA music_notes_data_pointers_h, X
+  STA notes_source_ptr_h
+
+  JSR NotesQueueInit
+
+  LDA #game_states::song_playing
+  RTS
+.endproc
+
 .proc waiting_to_start
   RTS
 .endproc
@@ -433,6 +454,30 @@ strings:
         ; TODO put strings here if needed
 
 nametable_main: .incbin "../assets/nametables/main.rle"
+
+music_notes_data_pointers_l:
+  .byte <music_notes_for_bad_apple
+  .byte <music_notes_for_at_the_price_of_oblivion
+
+music_notes_data_pointers_h:
+  .byte >music_notes_for_bad_apple
+  .byte >music_notes_for_at_the_price_of_oblivion
+
+music_notes_for_bad_apple:
+  ; placeholder data
+  .byte $80, %1000
+  .byte $80, %0001
+  .byte $80, %1000
+  .byte $80, %0001
+  .byte $00, %1111
+
+music_notes_for_at_the_price_of_oblivion:
+  ; placeholder data
+  .byte $80, %1000
+  .byte $80, %0001
+  .byte $80, %1000
+  .byte $80, %0001
+  .byte $00, %1111
 
 .segment "CHR"
 .incbin "../assets/graphics.chr"
