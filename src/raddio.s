@@ -14,7 +14,8 @@ FT_DPCM_OFF=$c000
 
 ; music/sfx constants
 .enum music_track
-  ThreeInTheMorning
+  BadApple = 0
+  AtThePriceOfOblivion = 2
 .endenum
 
 .enum sfx
@@ -194,15 +195,21 @@ clear_ram:
   LDA #%00011110  ; turn on screen
   STA PPUMASK
 
-;  LDX #<music_data
-;  LDY #>music_data
-;  LDA #1
-;  JSR FamiToneInit
-;
-;  LDX #<sfx_data
-;  LDY #>sfx_data
-;  LDA #1
-;  JSR FamiToneSfxInit
+  LDX music_track::BadApple
+  LDA music_data+1, X
+  TAY
+  LDA music_data, X
+  TAX
+  LDA #1
+  JSR FamiToneInit
+
+  LDX #<sfx_data
+  LDY #>sfx_data
+  LDA #1
+  JSR FamiToneSfxInit
+
+  LDA #$00
+  JSR FamiToneMusicPlay
 
 forever:
   LDA nmis
@@ -211,7 +218,7 @@ forever:
   STA old_nmis
   ; new frame code
   JSR game_state_handler
-; JSR FamiToneUpdate
+  JSR FamiToneUpdate
 
 etc:
   JMP forever
@@ -253,25 +260,6 @@ etc:
   LDA #>string
   STA addr_ptr+1
   JSR write_tiles
-.endmacro
-
-.macro DIALOG string_pointer, callback
-  LDA #<string_pointer
-  STA dialog_string_ptr
-  LDA #>string_pointer
-  STA dialog_string_ptr+1
-  .ifblank callback
-  LDA #<(dialog_to_playing-1)
-  STA dialog_callback
-  LDA #>(dialog_to_playing-1)
-  STA dialog_callback+1
-  .else
-  LDA #<(callback-1)
-  STA dialog_callback
-  LDA #>(callback-1)
-  STA dialog_callback+1
-  .endif
-  JSR begin_display_dialog
 .endmacro
 
 ; these act like printf, displaying the corresponding digit instead
