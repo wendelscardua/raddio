@@ -88,7 +88,10 @@ notes_source_ptr_h: .res 1
   ;; drops item from queue head
   INC notes_queue_head
   LDA notes_queue_head
-  AND #(NOTES_QUEUE_SIZE-1)
+  CMP #NOTES_QUEUE_SIZE
+  BNE :+
+  LDA #$00
   STA notes_queue_head
+:
   RTS
 .endproc

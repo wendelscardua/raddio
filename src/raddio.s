@@ -421,13 +421,6 @@ NOTE_SPEED = 2
   CLC
   ADC #NOTE_SPEED
   STA notes_queue+Note::ycoord, X
-
-  ; past the screen? dequeue
-  CMP #$F0
-  BCC @next
-  save_regs
-  JSR NotesQueuePop
-  restore_regs
 @next:
   INX
   CPX #NOTES_QUEUE_SIZE
@@ -435,6 +428,15 @@ NOTE_SPEED = 2
   LDX #$00
   JMP @loop
 @exit_loop:
+  ; dequeue if head note passed bottom
+  LDX notes_queue_head
+  LDA notes_queue+Note::ycoord, X
+  CMP #$FF
+  BEQ :+
+  CMP #$F1
+  BCC :+
+  JSR NotesQueuePop
+:
 
   draw_notes:
   LDA #$00
@@ -467,6 +469,16 @@ NOTE_SPEED = 2
   LDX #$00
   JMP @loop
 @exit_loop:
+
+  ; erase old sprites
+  LDX sprite_counter
+  LDA #$F0
+:
+  STA oam_sprites+Sprite::ycoord, X
+  .repeat .sizeof(Sprite)
+  INX
+  .endrepeat
+  BNE :-
 
   player_input:
   ; TODO player input
