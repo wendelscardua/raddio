@@ -18,7 +18,11 @@ debug: LD65_FLAGS += -Ln labels.txt --dbgfile ${PROJECT}.nes.dbg
 debug: CA65_FLAGS += -g -DDEBUG=1
 debug: ${TARGET}
 
-src/${PROJECT}.o: src/${PROJECT}.s $(shell find assets -type f)
+src/${PROJECT}.o: src/${PROJECT}.s src/constants.inc src/header.inc src/notes_queue.inc src/famitone2.s \
+	assets/metasprites.s assets/bg-palettes.pal assets/sprite-palettes.pal \
+	assets/nametables/main.rle \
+	assets/notes/bad_apple.notes.bin \
+	assets/graphics.chr
 	ca65 src/${PROJECT}.s ${CA65_FLAGS}
 
 src/audio-data.o: src/audio-data.s assets/audio/${PROJECT}-sfx.s assets/audio/${PROJECT}-soundtrack.s \
@@ -40,6 +44,9 @@ assets/audio/${PROJECT}-sfx.s: assets/audio/${PROJECT}-sfx.nsf
 
 %.o: %.s
 	ca65 $< ${CA65_FLAGS}
+
+%.notes.bin: %.notes
+	ruby tools/compile-notes-data.rb $^
 
 clean:
 	rm src/*.o *.nes labels.txt *.dbg
