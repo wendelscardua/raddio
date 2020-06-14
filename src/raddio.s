@@ -362,6 +362,7 @@ exit:
   JSR fill_notes_queue
 
   LDA #game_states::song_playing
+  STA game_state
   RTS
 .endproc
 
