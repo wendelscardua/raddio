@@ -423,11 +423,6 @@ NOTE_SPEED = 2
   BEQ @exit_loop
 
   LDA notes_queue+Note::release_delay, X
-  LDY notes_queue+Note::ycoord, X
-  debugRegs
-  debugOut {"Note at ", fDec8(debug_x), ", delay = ", fDec8(debug_a), ", y = ", fDec8(debug_y), "."}
-
-  LDA notes_queue+Note::release_delay, X
   BEQ @move_note
 
   DEC notes_queue+Note::release_delay, X
@@ -458,7 +453,7 @@ NOTE_SPEED = 2
   JSR NotesQueuePop
 :
 
-  draw_notes:
+  draw_notes_loop:
   LDA #$00
   STA sprite_counter
   ; draw visible notes
@@ -471,19 +466,7 @@ NOTE_SPEED = 2
   CMP #$FF
   BEQ @exit_loop
 
-  STA temp_y
-  LDA #$80
-  STA temp_x
-  LDA note_sprites_l
-  STA addr_ptr
-  LDA note_sprites_h
-  STA addr_ptr+1
-
-  debugRegs
-  debugOut {"Drawing sprite at y = ", fDec8(temp_y), " X = ", fDec8(debug_x), " here"}
-  save_regs
-  JSR display_metasprite
-  restore_regs
+  JSR draw_notes
 
 @next:
   INX
@@ -513,6 +496,74 @@ NOTE_SPEED = 2
   RTS
 .endproc
 
+.proc draw_notes
+  ;; draw current note on screen
+  ;; input X = position in notes queue
+  STA temp_y
+  LDA #$80
+
+  ; draw note 1
+  LDA notes_queue+Note::columns, X
+  AND #%1000
+  BEQ :+
+  LDA #$48
+  STA temp_x
+  LDA #<note_1_sprite
+  STA addr_ptr
+  LDA #>note_1_sprite
+  STA addr_ptr+1
+
+  save_regs
+  JSR display_metasprite
+  restore_regs
+:
+  ; draw note 2
+  LDA notes_queue+Note::columns, X
+  AND #%0100
+  BEQ :+
+  LDA #$68
+  STA temp_x
+  LDA #<note_2_sprite
+  STA addr_ptr
+  LDA #>note_2_sprite
+  STA addr_ptr+1
+
+  save_regs
+  JSR display_metasprite
+  restore_regs
+:
+  ; draw note 3
+  LDA notes_queue+Note::columns, X
+  AND #%0010
+  BEQ :+
+  LDA #$88
+  STA temp_x
+  LDA #<note_3_sprite
+  STA addr_ptr
+  LDA #>note_3_sprite
+  STA addr_ptr+1
+
+  save_regs
+  JSR display_metasprite
+  restore_regs
+:
+  ; draw note 4
+  LDA notes_queue+Note::columns, X
+  AND #%0001
+  BEQ :+
+  LDA #$A8
+  STA temp_x
+  LDA #<note_4_sprite
+  STA addr_ptr
+  LDA #>note_4_sprite
+  STA addr_ptr+1
+
+  save_regs
+  JSR display_metasprite
+  restore_regs
+:
+  RTS
+.endproc
 
 .proc song_finished
   RTS
@@ -578,16 +629,10 @@ palettes:
 sprites:
 .include "../assets/metasprites.s"
 
-note_sprites_l:
-  .byte <metasprite_0_data
-  .byte <metasprite_0_data
-  .byte <metasprite_0_data
-  .byte <metasprite_0_data
-note_sprites_h:
-  .byte >metasprite_0_data
-  .byte >metasprite_0_data
-  .byte >metasprite_0_data
-  .byte >metasprite_0_data
+note_1_sprite = metasprite_0_data
+note_2_sprite = metasprite_0_data
+note_3_sprite = metasprite_0_data
+note_4_sprite = metasprite_0_data
 
 strings:
         ; TODO put strings here if needed
@@ -606,8 +651,8 @@ music_notes_for_bad_apple:
   ; placeholder data
   .byte $80, %1000
   .byte $80, %0001
-  .byte $80, %1000
-  .byte $80, %0001
+  .byte $80, %1100
+  .byte $80, %0011
   .byte $00, %1111
 
 music_notes_for_at_the_price_of_oblivion:
