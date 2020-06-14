@@ -235,6 +235,7 @@ forever:
   ; new frame code
   JSR game_state_handler
   JSR FamiToneUpdate
+  JSR fill_notes_queue
 
 etc:
   JMP forever
@@ -394,10 +395,78 @@ NOTE_SPEED = 2
   KIL
 
   update_notes:
-  ; TODO update notes
+  ; update notes
+  ; - from the queue head, look for the first note with delay
+  ;   - meanwhile, if note has no delay, move it down
+  ;     - if past the screen, dequeue it
+  ; - take the note with delay, then decrement it
+  ;   - then if zeroed, put sprite at the top
+
+  LDX notes_queue_head
+@loop:
+  CPX notes_queue_tail
+  BEQ @exit_loop
+
+  LDA notes_queue+Note::release_delay, X
+  BEQ @move_note
+
+  DEC notes_queue+Note::release_delay, X
+  BNE @exit_loop
+  LDA #$00
+  STA notes_queue+Note::ycoord, X
+  JMP @exit_loop
+
+@move_note:
+  LDA notes_queue+Note::ycoord, X
+  CLC
+  ADC #NOTE_SPEED
+  STA notes_queue+Note::ycoord, X
+
+  ; past the screen? dequeue
+  CMP #$F0
+  BCC @next
+  save_regs
+  JSR NotesQueuePop
+  restore_regs
+@next:
+  INX
+  CPX #NOTES_QUEUE_SIZE
+  BNE @loop
+  LDX #$00
+  JMP @loop
+@exit_loop:
 
   draw_notes:
-  ; TODO draw visible notes
+  LDA #$00
+  STA sprite_counter
+  ; draw visible notes
+  LDX notes_queue_head
+@loop:
+  CPX notes_queue_tail
+  BEQ @exit_loop
+
+  LDA notes_queue+Note::ycoord
+  CMP #$FF
+  BEQ @exit_loop
+
+  STA temp_y
+  LDA #$80
+  STA temp_x
+  LDA note_sprites_l
+  STA addr_ptr
+  LDA note_sprites_h
+  STA addr_ptr+1
+  save_regs
+  JSR display_metasprite
+  restore_regs
+
+@next:
+  INX
+  CPX #NOTES_QUEUE_SIZE
+  BNE @loop
+  LDX #$00
+  JMP @loop
+@exit_loop:
 
   player_input:
   ; TODO player input
