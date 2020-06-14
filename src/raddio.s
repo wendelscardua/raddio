@@ -108,6 +108,8 @@ sprite_counter: .res 1
 
 selected_song: .res 1
 
+start_delay: .res 1
+
 debug_x: .res 1
 debug_y: .res 1
 debug_a: .res 1
@@ -363,9 +365,6 @@ exit:
   LDA #1
   JSR FamiToneSfxInit
 
-  LDA #$00
-  JSR FamiToneMusicPlay
-
   LDX selected_song
   LDA music_notes_data_pointers_l, X
   STA notes_source_ptr_l
@@ -378,6 +377,9 @@ exit:
 
   LDA #game_states::song_playing
   STA game_state
+
+  LDA #(176 / 2) ; target y / note speed
+  STA start_delay
   RTS
 .endproc
 
@@ -403,6 +405,14 @@ exit_loop:
 NOTE_SPEED = 2
 
 .proc song_playing
+  LDA start_delay
+  BEQ skip_play
+  DEC start_delay
+  BNE skip_play
+  LDA #$00
+  JSR FamiToneMusicPlay
+skip_play:
+
   JSR NotesQueueEmpty
   debugOut {"Queue head = ", fDec8(notes_queue_head), ", tail = ", fDec8(notes_queue_tail), "."}
   BNE update_notes
