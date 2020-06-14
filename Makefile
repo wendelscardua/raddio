@@ -45,8 +45,8 @@ assets/audio/${PROJECT}-sfx.s: assets/audio/${PROJECT}-sfx.nsf
 %.o: %.s
 	ca65 $< ${CA65_FLAGS}
 
-%.notes.bin: %.notes
-	ruby tools/compile-notes-data.rb $^
+%.notes.bin: %.notes tools/compile-notes-data.rb
+	ruby tools/compile-notes-data.rb $<
 
 clean:
 	rm src/*.o *.nes labels.txt *.dbg

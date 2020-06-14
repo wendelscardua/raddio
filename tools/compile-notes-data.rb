@@ -22,6 +22,15 @@
 # 900/x beats/min = BPM beats/min
 # x = 900/BPM = 900 * Speed / (Tempo * 6) = 150 * Speed / Tempo
 
+MASK_ALIAS = {
+  'u' => '0100',
+  'd' => '0010',
+  'l' => '1000',
+  'r' => '0001',
+  'ul' => '1100',
+  'dr' => '0011'
+}.freeze
+
 def main
   input_filename = ARGV[0]
   output_filename = ARGV[1] || "#{input_filename}.bin"
@@ -39,11 +48,13 @@ def main
 
     last_frame = 0
     File.open(output_filename, 'wb') do |output|
-      input.readlines.each do |input_line|
-        (tracker_frame, tracker_row, mask) = input_line.chomp.split(/ /)
+      input.readlines.map(&:chomp).each do |input_line|
+        next if input_line == ''
+
+        (tracker_frame, tracker_row, mask) = input_line.split(/ /)
         tracker_frame = tracker_frame.to_i(16)
         tracker_row = tracker_row.to_i(16)
-        mask = mask.to_i(2)
+        mask = MASK_ALIAS.fetch(mask, mask).to_i(2)
 
         target_frame = ((tracker_frame * 0x40 + tracker_row) * frames_per_row).round
 
