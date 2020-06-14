@@ -359,7 +359,20 @@ exit:
 
   JSR NotesQueueInit
 
+  JSR fill_notes_queue
+
   LDA #game_states::song_playing
+  RTS
+.endproc
+
+.proc fill_notes_queue
+loop:
+  JSR NotesQueueFull
+  BEQ exit_loop
+  JSR NotesQueuePush
+  BEQ exit_loop
+  JMP loop
+exit_loop:
   RTS
 .endproc
 
@@ -371,7 +384,13 @@ exit:
   RTS
 .endproc
 
+NOTE_SPEED = 2
+
 .proc song_playing
+  ; TODO update notes
+  ; TODO draw visible notes
+  ; TODO player input
+  ; TODO scoring
   RTS
 .endproc
 

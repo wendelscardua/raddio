@@ -52,11 +52,16 @@ notes_source_ptr_h: .res 1
 .proc NotesQueuePush
   ;; pushes a note from note source
   ;; cobbles X, Y
+  ;; Z flag means source is over
 
   LDX notes_queue_tail
 
   LDY #$00
   LDA (notes_source_ptr), Y
+  BNE :+
+  ; zero means source is finished
+  RTS
+:
   STA notes_queue+Note::release_delay, X
   INY
   LDA (notes_source_ptr), Y
@@ -75,6 +80,7 @@ notes_source_ptr_h: .res 1
   BNE :+
   INC notes_source_ptr+1
 :
+  LDA #$01
   RTS
 .endproc
 
