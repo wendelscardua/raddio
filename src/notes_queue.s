@@ -75,11 +75,13 @@ notes_source_ptr_h: .res 1
   AND #(NOTES_QUEUE_SIZE-1)
   STA notes_queue_tail
   
-  ; increment note source ptr
+  ; increment note source ptr x2
+.repeat 2
   INC notes_source_ptr
   BNE :+
   INC notes_source_ptr+1
 :
+.endrepeat
   LDA #$01
   RTS
 .endproc

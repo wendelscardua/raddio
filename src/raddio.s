@@ -28,17 +28,27 @@ FT_DPCM_OFF=$c000
 ; debug - macros for NintendulatorDX interaction
 .ifdef DEBUG
 .macro debugOut str
-    .local over
-    sta $4040
-    jmp over
-        .byte str, 0
-    over:
+  sta $4040
+  jmp :+
+      .byte str, 0
+:
+.endmacro
+
+.macro debugRegs
+  STA debug_a
+  STX debug_x
+  STY debug_y
 .endmacro
 
 .define fHex8( addr ) 1, 0, <(addr), >(addr)
 .define fDec8( addr ) 1, 1, <(addr), >(addr)
 .define fHex16( addr ) 1, 2, <(addr), >(addr)
 .define fDec16( addr ) 1, 3, <(addr), >(addr)
+.else
+.macro debugOut str
+.endmacro
+.macro debugRegs
+.endmacro
 .endif
 
 .segment "ZEROPAGE"
@@ -97,6 +107,10 @@ game_state: .res 1
 sprite_counter: .res 1
 
 selected_song: .res 1
+
+debug_x: .res 1
+debug_y: .res 1
+debug_a: .res 1
 
 .segment "BSS"
 ; non-zp RAM goes here
@@ -390,6 +404,7 @@ NOTE_SPEED = 2
 
 .proc song_playing
   JSR NotesQueueEmpty
+  debugOut {"Queue head = ", fDec8(notes_queue_head), ", tail = ", fDec8(notes_queue_tail), "."}
   BNE update_notes
   ; TODO end game
   KIL
@@ -406,6 +421,11 @@ NOTE_SPEED = 2
 @loop:
   CPX notes_queue_tail
   BEQ @exit_loop
+
+  LDA notes_queue+Note::release_delay, X
+  LDY notes_queue+Note::ycoord, X
+  debugRegs
+  debugOut {"Note at ", fDec8(debug_x), ", delay = ", fDec8(debug_a), ", y = ", fDec8(debug_y), "."}
 
   LDA notes_queue+Note::release_delay, X
   BEQ @move_note
@@ -447,7 +467,7 @@ NOTE_SPEED = 2
   CPX notes_queue_tail
   BEQ @exit_loop
 
-  LDA notes_queue+Note::ycoord
+  LDA notes_queue+Note::ycoord, X
   CMP #$FF
   BEQ @exit_loop
 
@@ -458,6 +478,9 @@ NOTE_SPEED = 2
   STA addr_ptr
   LDA note_sprites_h
   STA addr_ptr+1
+
+  debugRegs
+  debugOut {"Drawing sprite at y = ", fDec8(temp_y), " X = ", fDec8(debug_x), " here"}
   save_regs
   JSR display_metasprite
   restore_regs
