@@ -387,12 +387,27 @@ exit_loop:
 NOTE_SPEED = 2
 
 .proc song_playing
+  JSR NotesQueueEmpty
+  BNE update_notes
+  ; TODO end game
+  KIL
+
+  update_notes:
   ; TODO update notes
+
+  draw_notes:
   ; TODO draw visible notes
+
+  player_input:
   ; TODO player input
+
+  scoring:
   ; TODO scoring
+
+  return:
   RTS
 .endproc
+
 
 .proc song_finished
   RTS
