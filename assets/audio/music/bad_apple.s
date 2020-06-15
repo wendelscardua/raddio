@@ -16,8 +16,8 @@ bad_apple_music_data:
 	.byte $30 ;instrument $02
 	.word @env3,@env0,@env0
 	.byte $00
-	.byte $70 ;instrument $07
-	.word @env1,@env4,@env5
+	.byte $30 ;instrument $07
+	.word @env4,@env0,@env0
 	.byte $00
 
 @samples:
@@ -32,10 +32,9 @@ bad_apple_music_data:
 	.byte $cf,$c5,$c7,$c8,$c9,$c8,$c8,$c7,$c7,$c6,$c5,$c4,$c3,$c2,$c0,$00
 	.byte $0e
 @env4:
-	.byte $c0,$c6,$c7,$c9,$ca,$cb,$cc,$0f,$cc,$00,$08
-@env5:
-	.byte $b8,$b2,$af,$ac,$a9,$a6,$a3,$a0,$9d,$9a,$97,$94,$97,$a2,$b9,$e1
-	.byte $ff,$00,$10
+	.byte $cf,$cf,$ce,$cc,$cb,$c9,$c6,$c4,$c3,$c4,$c4,$c5,$06,$c4,$02,$c3
+	.byte $ca,$ca,$c9,$c9,$c8,$c7,$c7,$c6,$c5,$c5,$c4,$c2,$c1,$c1,$c0,$00
+	.byte $1e
 
 
 ; New song
