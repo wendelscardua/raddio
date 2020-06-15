@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
+# frozen_string_literal: true
 
 # Input format:
+# ------------
 # speed tempo
 # tracker-frame (hex) tracker-row (hex) notes (base 2)
 # Example:
@@ -11,7 +13,13 @@
 # ..
 # 24 3F 1100
 #
+# Helper commands inside input:
+# ----------------------------
+# Repeat command: frame_b = frame_a
+#  - causes frame_b to use the same notes as frame_a
+#
 # Output binary format:
+# --------------------
 # delta-frame-count: .byte
 # columns-mask: .byte
 # (ends with delta frame zero)
@@ -46,12 +54,21 @@ def main
 
     puts "Frames per row: #{frames_per_row}"
 
+    input_queue = input.readlines.map(&:chomp).reject { |line| line == '' }
+
+    frame_history = {}
+
     last_frame = 0
     File.open(output_filename, 'wb') do |output|
-      input.readlines.map(&:chomp).each do |input_line|
-        next if input_line == ''
-
+      while (input_line = input_queue.shift)
         (tracker_frame, tracker_row, mask) = input_line.split(/ /)
+        if tracker_row == '='
+          # then mask contains source tracker frame
+          repeat_lines = frame_history[mask].map { |data| "#{tracker_frame} #{data[0]} #{data[1]}" }
+          input_queue.unshift(*repeat_lines)
+          next
+        end
+        (frame_history[tracker_frame] ||= []).push [tracker_row, mask]
         tracker_frame = tracker_frame.to_i(16)
         tracker_row = tracker_row.to_i(16)
         mask = MASK_ALIAS.fetch(mask, mask).to_i(2)
