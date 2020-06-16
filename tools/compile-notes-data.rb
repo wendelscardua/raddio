@@ -59,6 +59,7 @@ def main
     frame_history = {}
 
     last_frame = 0
+    error = 0
     File.open(output_filename, 'wb') do |output|
       while (input_line = input_queue.shift)
         (tracker_frame, tracker_row, mask) = input_line.split(/ /)
@@ -73,7 +74,7 @@ def main
         tracker_row = tracker_row.to_i(16)
         mask = MASK_ALIAS.fetch(mask, mask).to_i(2)
 
-        target_frame = ((tracker_frame * 0x40 + tracker_row) * frames_per_row).round
+        target_frame = ((tracker_frame * 0x40 + tracker_row) * frames_per_row)
 
         delay = target_frame - last_frame
 
@@ -81,6 +82,19 @@ def main
           output.putc 60
           output.putc 0
           delay -= 60
+        end
+
+        error += (delay.round - delay)
+        delay = delay.round
+
+        if error >= 1
+          error -= 1
+          delay -= 1
+        end
+
+        if error <= -1
+          error += 1
+          delay += 1
         end
 
         output.putc delay.to_i
