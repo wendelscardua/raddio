@@ -4,7 +4,7 @@ bad_apple_music_data:
 	.byte 1
 	.word @instruments
 	.word @samples-3
-	.word @song0ch0,@song0ch1,@song0ch2,@song0ch3,@song0ch4,276,230 ; New song
+	.word @song0ch0,@song0ch1,@song0ch2,@song0ch3,@song0ch4,307,256 ; New song
 
 @instruments:
 	.byte $70 ;instrument $00
