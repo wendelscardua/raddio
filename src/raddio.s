@@ -414,9 +414,10 @@ NOTE_SPEED = 2
 skip_play:
 
   JSR NotesQueueEmpty
-  debugOut {"Queue head = ", fDec8(notes_queue_head), ", tail = ", fDec8(notes_queue_tail), "."}
+
   BNE update_notes
-  
+
+  JSR FamiToneMusicStop
   LDA #game_states::song_finished
   STA game_state
   RTS
