@@ -96,7 +96,21 @@
 09 = 08
 0A = 08
 
-0B 00 l TODO
+0B 00 u C#4
+0B 04 r A#3
+0B 08 r A#3
+0B 0C d G#3
+0B 10 u C#4
+0B 14 r A#3
+0B 18 r A#3
+0B 1C l D#4
+0B 20 u F#4
+0B 24 l D#4
+0B 28 r A#3
+0B 2C d G#3
+0B 30 d G#3
+0B 34 d F-3
+0B 38 l D#3
 
 0C = 08
 0D = 08
@@ -122,15 +136,74 @@
 1B = 08
 1C = 08
 
-1D 00 l TODO
+1D 00 u C#4
+1D 04 r A#3
+1D 08 r A#3
+1D 0C d G#3
+1D 10 u C#4
+1D 14 r A#3
+1D 18 r A#3
+1D 1C l D#4
+1D 20 u F#4
+1D 24 l D#4
+1D 28 r A#3
+1D 2C d G#3
+1D 30 d G#3
+1D 34 d F-3
+1D 38 l D#3
+1D 3C r A-3
 
-1E 00 l TODO
+1E 00 u D-4
+1E 04 r B-3
+1E 08 r B-3
+1E 0C l A-3
+1E 10 u D-4
+1E 14 r B-3
+1E 18 r B-3
+1E 1C l A-3
+1E 20 l A-3
+1E 24 u F#3
+1E 28 l E-3
+1E 2C d D-3
+1E 30 u F#3
+1E 34 l A-3
+1E 38 l E-3
+1E 3C l A-3
 
 1F = 1E
 20 = 1E
 
-21 00 l TODO
+21 00 u D-4
+21 04 r B-3
+21 08 r B-3
+21 0C l A-3
+21 10 u D-4
+21 14 r B-3
+21 18 r B-3
+21 1C l E-3
+21 20 u G-3
+21 24 l E-3
+21 28 d B-2
+21 2C l A-3
+21 30 l A-3
+21 34 u F#3
+21 38 l E-3
 
-22 00 l TODO
+22 00 l
+22 03 l
+22 06 l
+22 0C r 
+22 0F r
+22 15 r
+22 18 l
+22 1E l
+22 21 l
+22 27 r
+22 2A r
+22 30 r
+22 33 l
+22 39 l
+22 3C l
 
-23 00 l TODO
+23 02 r
+23 05 r
