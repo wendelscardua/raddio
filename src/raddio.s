@@ -643,9 +643,9 @@ sprites:
 .include "../assets/metasprites.s"
 
 note_1_sprite = metasprite_0_data
-note_2_sprite = metasprite_0_data
-note_3_sprite = metasprite_0_data
-note_4_sprite = metasprite_0_data
+note_2_sprite = metasprite_1_data
+note_3_sprite = metasprite_2_data
+note_4_sprite = metasprite_3_data
 
 strings:
         ; TODO put strings here if needed
