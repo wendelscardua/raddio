@@ -29,7 +29,7 @@ FT_DPCM_OFF=$c000
 
 TARGET_Y = 176
 NOTE_SPEED = 2
-
+STAR_CHARGE_PER_STAR = 10
 
 ; debug - macros for NintendulatorDX interaction
 .ifdef DEBUG
@@ -121,6 +121,8 @@ selected_song: .res 1
 start_delay: .res 1
 
 score: .res 5
+stars: .res 1
+star_charge: .res 1
 
 debug_x: .res 1
 debug_y: .res 1
@@ -399,6 +401,8 @@ exit:
   STA score+2
   STA score+3
   STA score+4
+  STA stars
+  STA star_charge
   RTS
 .endproc
 
@@ -445,6 +449,29 @@ skip_play:
   STA PPUDATA
   LDA score+4
   STA PPUDATA
+
+  LDA #$23
+  STA PPUADDR
+  LDA #$72
+  STA PPUADDR
+
+  LDX #$00
+  LDA #$64 ; filled star tile
+:
+  CPX stars
+  BEQ :+
+  STA PPUDATA
+  INX
+  JMP :-
+:
+  LDA #$6A ; empty star tile
+:
+  CPX #5
+  BEQ :+
+  STA PPUDATA
+  INX
+  JMP :-
+:
 
   LDA #$20
   STA PPUADDR
@@ -670,9 +697,20 @@ skip_play:
 
   BEQ @good_match
 @bad_match:
+  LDA #$00
+  STA stars
+  STA star_charge
   LDA score_per_half_dy_when_wrong, X
   JMP @add_score
 @good_match:
+  LDA starness_per_half_dy, X
+  BEQ @decrease_stars
+@increase_stars:
+  JSR increase_stars
+  JMP @load_good_score
+@decrease_stars:
+  JSR decrease_stars
+@load_good_score:
   LDA score_per_half_dy, X
 
 @add_score:
@@ -698,6 +736,34 @@ skip_play:
   LDA #$00
   STA notes_queue+Note::columns, Y
 
+  RTS
+.endproc
+
+.proc increase_stars
+  LDA stars
+  CMP #5
+  BNE :+
+  RTS
+:
+  LDA star_charge
+  CMP #(STAR_CHARGE_PER_STAR-1)
+  BEQ :+
+  INC star_charge
+  RTS
+:
+  LDA #$00
+  STA star_charge
+  INC stars
+  RTS
+.endproc
+
+.proc decrease_stars
+  LDA stars
+  BEQ :+
+  DEC stars
+:
+  LDA #$00
+  STA star_charge
   RTS
 .endproc
 
