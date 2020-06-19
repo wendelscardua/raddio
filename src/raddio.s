@@ -105,8 +105,9 @@ ppu_addr_ptr: .res 2 ; temporary address for PPU_ADDR
 temp_x: .res 1
 temp_y: .res 1
 
-temp_dy: .res 1
-temp_min_dy: .res 1
+dy: .res 1
+min_dy: .res 1
+input_columns: .res 1
 
 nmis: .res 1
 old_nmis: .res 1
@@ -571,7 +572,7 @@ skip_play:
 
   ; the currently minimum y distance between a notes row and the target Y
   LDA #$7F
-  STA temp_min_dy
+  STA min_dy
 
   ; iterate over visible notes, store closest match index in Y
   LDX notes_queue_head
@@ -596,17 +597,17 @@ skip_play:
   EOR #$FF
   ADC #$01
 :
-  STA temp_dy
+  STA dy
 
   ; too far, ignore match
   CMP #$20
   BCS @next
 
   ; not better than previous match
-  CMP temp_min_dy
+  CMP min_dy
   BCS @next
 
-  STA temp_min_dy
+  STA min_dy
   TXA
   TAY
 
@@ -624,16 +625,57 @@ skip_play:
   RTS
 :
 
-  debugOut {"Position match, delta = ", fDec8(temp_min_dy), "."}
+  debugOut {"Position match, delta = ", fDec8(min_dy), "."}
 
-  ; TODO: check if input matches
+  ;;; match, score based on how close it was
 
-  ; match, score based on how close it was
-  LDA temp_min_dy
+  ; get score per half dy index
+  LDA min_dy
   LSR
   TAX
+
+  ; check if input matches
+  LDA #$00
+  STA input_columns
+  LDA pressed_buttons
+  AND #BUTTON_LEFT
+  BEQ :+
+  LDA #%1000
+  ORA input_columns
+  STA input_columns
+:
+  LDA pressed_buttons
+  AND #BUTTON_UP
+  BEQ :+
+  LDA #%0100
+  ORA input_columns
+  STA input_columns
+:
+  LDA pressed_buttons
+  AND #BUTTON_DOWN
+  BEQ :+
+  LDA #%0010
+  ORA input_columns
+  STA input_columns
+:
+  LDA pressed_buttons
+  AND #BUTTON_RIGHT
+  BEQ :+
+  LDA #%0001
+  ORA input_columns
+  STA input_columns
+:
+  LDA input_columns
+  CMP notes_queue+Note::columns, Y
+
+  BEQ @good_match
+@bad_match:
+  LDA score_per_half_dy_when_wrong, X
+  JMP @add_score
+@good_match:
   LDA score_per_half_dy, X
 
+@add_score:
   CLC
   ADC score+4
   STA score+4
@@ -824,6 +866,14 @@ score_per_half_dy:
   ;      [--- great------]   [--- good ------]   [--- bad -------]   [--- miss -----------]
   ;      00,  01,  02,  03,  04,  05,  06,  07,  08,  09,  0A,  0B,  0C,  0D,  0E , 0F,  10
   .byte $0A, $0A, $0A, $0A, $05, $05, $05, $05, $01, $01, $01, $01, $00, $00, $00, $00, $00
+score_per_half_dy_when_wrong:
+  ;      [--- great------]   [--- good ------]   [--- bad -------]   [--- miss -----------]
+  ;      00,  01,  02,  03,  04,  05,  06,  07,  08,  09,  0A,  0B,  0C,  0D,  0E , 0F,  10
+  .byte $02, $01, $01, $01, $01, $01, $01, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00
+starness_per_half_dy:
+  ;      [--- great------]   [--- good ------]   [--- bad -------]   [--- miss -----------]
+  ;      00,  01,  02,  03,  04,  05,  06,  07,  08,  09,  0A,  0B,  0C,  0D,  0E , 0F,  10
+  .byte $01, $01, $01, $01, $01, $01, $01, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
 .segment "CHR"
 .incbin "../assets/graphics.chr"
