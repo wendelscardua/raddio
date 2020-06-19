@@ -29,7 +29,7 @@ FT_DPCM_OFF=$c000
 
 TARGET_Y = 176
 NOTE_SPEED = 2
-STAR_CHARGE_PER_STAR = 10
+STAR_CHARGE_PER_STAR = $10
 
 ; debug - macros for NintendulatorDX interaction
 .ifdef DEBUG
