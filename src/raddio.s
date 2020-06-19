@@ -428,6 +428,30 @@ exit_loop:
   LDA #$00
   JSR FamiToneMusicPlay
 skip_play:
+  LDA PPUSTATUS
+  LDA #$23
+  STA PPUADDR
+  LDA #$69
+  STA PPUADDR
+
+  LDA score
+  STA PPUDATA
+  LDA score+1
+  STA PPUDATA
+  LDA score+2
+  STA PPUDATA
+  LDA score+3
+  STA PPUDATA
+  LDA score+4
+  STA PPUDATA
+
+  LDA #$20
+  STA PPUADDR
+  LDA #$00
+  STA PPUADDR
+  STA PPUSCROLL
+  STA PPUSCROLL
+
 
   JSR NotesQueueEmpty
 
@@ -622,30 +646,6 @@ skip_play:
   INC score, X
   JMP @score_carry_loop
 @exit_score_carry_loop:
-
-  LDA PPUSTATUS
-  LDA #$23
-  STA PPUADDR
-  LDA #$69
-  STA PPUADDR
-
-  LDA score
-  STA PPUDATA
-  LDA score+1
-  STA PPUDATA
-  LDA score+2
-  STA PPUDATA
-  LDA score+3
-  STA PPUDATA
-  LDA score+4
-  STA PPUDATA
-
-  LDA #$20
-  STA PPUADDR
-  LDA #$00
-  STA PPUADDR
-  STA PPUSCROLL
-  STA PPUSCROLL
 
   debugOut {"New score ", fDec8(score), fDec8(score+1), fDec8(score+2), fDec8(score+3), fDec8(score+4), "."}
 
