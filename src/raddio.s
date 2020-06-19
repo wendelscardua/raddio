@@ -25,6 +25,12 @@ FT_DPCM_OFF=$c000
   BadNote
 .endenum
 
+; game config
+
+TARGET_Y = 176
+NOTE_SPEED = 2
+
+
 ; debug - macros for NintendulatorDX interaction
 .ifdef DEBUG
 .macro debugOut str
@@ -99,6 +105,9 @@ ppu_addr_ptr: .res 2 ; temporary address for PPU_ADDR
 temp_x: .res 1
 temp_y: .res 1
 
+temp_dy: .res 1
+temp_min_dy: .res 1
+
 nmis: .res 1
 old_nmis: .res 1
 
@@ -109,6 +118,8 @@ sprite_counter: .res 1
 selected_song: .res 1
 
 start_delay: .res 1
+
+score: .res 5
 
 debug_x: .res 1
 debug_y: .res 1
@@ -378,8 +389,15 @@ exit:
   LDA #game_states::song_playing
   STA game_state
 
-  LDA #(176 / 2) ; target y / note speed
+  LDA #(TARGET_Y / NOTE_SPEED)
   STA start_delay
+
+  LDA #$00
+  STA score
+  STA score+1
+  STA score+2
+  STA score+3
+  STA score+4
   RTS
 .endproc
 
@@ -401,8 +419,6 @@ exit_loop:
 .proc song_selection
   RTS
 .endproc
-
-NOTE_SPEED = 2
 
 .proc song_playing
   LDA start_delay
@@ -500,12 +516,130 @@ skip_play:
   BNE :-
 
   player_input:
-  ; TODO player input
 
-  scoring:
-  ; TODO scoring
+  JSR readjoy
+  LDA pressed_buttons
+  BNE :+
+  RTS
+:
+  AND #(BUTTON_UP|BUTTON_DOWN|BUTTON_LEFT|BUTTON_RIGHT)
+  BNE :+
+  JSR song_playing_arrow_input
+:
 
-  return:
+  RTS
+.endproc
+
+.proc song_playing_arrow_input
+  ; during song playing, checks if input happened around a notes row
+  ; if so, score according to how close they matched
+  ; then the matched note is erased
+
+  ; first, bail out if queue is empty
+  JSR NotesQueueEmpty
+  BNE :+
+  RTS
+:
+
+  ; guard clause
+  LDY notes_queue_tail
+
+  ; the currently minimum y distance between a notes row and the target Y
+  LDA #$7F
+  STA temp_min_dy
+
+  ; iterate over visible notes, store closest match index in Y
+  LDX notes_queue_head
+@loop:
+  CPX notes_queue_tail
+  BEQ @exit_loop
+
+  ; notes on queue are ordered; first, the released ones, then the unreleased
+  ; if we found an unreleased, we can bail out of the loop
+  LDA notes_queue+Note::release_delay, X
+  BNE @exit_loop
+
+  ; A := abs(ycoord - target_y)
+  LDA notes_queue+Note::ycoord, X
+  SEC
+  SBC #TARGET_Y
+  BCS :+
+  EOR #$FF
+  ADC #$01
+:
+  STA temp_dy
+
+  ; too far, ignore match
+  CMP #$18
+  BCS @next
+
+  ; not better than previous match
+  CMP temp_min_dy
+  BCS @next
+
+  STA temp_min_dy
+  TXA
+  TAY
+
+@next:
+  INX
+  CPX #NOTES_QUEUE_SIZE
+  BNE @loop
+  LDX #$00
+  JMP @loop
+@exit_loop:
+
+  ; no match
+  CPY notes_queue_tail
+  BNE :+
+  RTS
+:
+
+  ; match, score based on how close it was
+  LDA temp_min_dy
+  LSR
+  TAX
+  LDA score_per_half_dy, X
+
+  CLC
+  ADC score+4
+  STA score+4
+  LDX #4
+@score_carry_loop:
+  LDA score, X
+  CMP #10
+  BCC @exit_score_carry_loop
+  SEC
+  SBC #10
+  STA score, X
+  DEX
+  INC score, X
+  JMP @score_carry_loop
+@exit_score_carry_loop:
+
+  LDA PPUSTATUS
+  LDA #$23
+  STA PPUADDR
+  LDA #$69
+  STA PPUADDR
+
+  LDA score
+  STA PPUDATA
+  LDA score+1
+  STA PPUDATA
+  LDA score+2
+  STA PPUDATA
+  LDA score+3
+  STA PPUDATA
+  LDA score+4
+  STA PPUDATA
+
+  LDA #$20
+  STA PPUADDR
+  LDA #$00
+  STA PPUADDR
+  STA PPUSCROLL
+  STA PPUSCROLL
   RTS
 .endproc
 
@@ -669,6 +803,11 @@ music_notes_for_at_the_price_of_oblivion:
   .byte $80, %1000
   .byte $80, %0001
   .byte $00, %1111
+
+score_per_half_dy:
+  ;      [-- great --] [--- good ---] [--- bad ---] [--- miss --------]
+  ;      00,  01,  02,  03,  04,  05,  06,  07,  08,  09,  0A,  0B,  0C
+  .byte $0A, $0A, $0A, $05, $05, $05, $01, $01, $01, $00, $00, $00, $00
 
 .segment "CHR"
 .incbin "../assets/graphics.chr"
