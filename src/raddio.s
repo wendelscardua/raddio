@@ -452,7 +452,6 @@ skip_play:
   STA PPUSCROLL
   STA PPUSCROLL
 
-
   JSR NotesQueueEmpty
 
   BNE update_notes
@@ -596,7 +595,7 @@ skip_play:
   STA temp_dy
 
   ; too far, ignore match
-  CMP #$18
+  CMP #$20
   BCS @next
 
   ; not better than previous match
@@ -814,9 +813,9 @@ music_notes_for_at_the_price_of_oblivion:
   .byte $00, %1111
 
 score_per_half_dy:
-  ;      [-- great --] [--- good ---] [--- bad ---] [--- miss --------]
-  ;      00,  01,  02,  03,  04,  05,  06,  07,  08,  09,  0A,  0B,  0C
-  .byte $0A, $0A, $0A, $05, $05, $05, $01, $01, $01, $00, $00, $00, $00
+  ;      [--- great------]   [--- good ------]   [--- bad -------]   [--- miss -----------]
+  ;      00,  01,  02,  03,  04,  05,  06,  07,  08,  09,  0A,  0B,  0C,  0D,  0E , 0F,  10
+  .byte $0A, $0A, $0A, $0A, $05, $05, $05, $05, $01, $01, $01, $01, $00, $00, $00, $00, $00
 
 .segment "CHR"
 .incbin "../assets/graphics.chr"
