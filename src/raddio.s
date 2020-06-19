@@ -523,7 +523,7 @@ skip_play:
   RTS
 :
   AND #(BUTTON_UP|BUTTON_DOWN|BUTTON_LEFT|BUTTON_RIGHT)
-  BNE :+
+  BEQ :+
   JSR song_playing_arrow_input
 :
 
@@ -540,6 +540,8 @@ skip_play:
   BNE :+
   RTS
 :
+
+  debugOut {"Input detected"}
 
   ; guard clause
   LDY notes_queue_tail
@@ -595,6 +597,10 @@ skip_play:
   RTS
 :
 
+  debugOut {"Position match, delta = ", fDec8(temp_min_dy), "."}
+
+  ; TODO: check if input matches
+
   ; match, score based on how close it was
   LDA temp_min_dy
   LSR
@@ -640,6 +646,9 @@ skip_play:
   STA PPUADDR
   STA PPUSCROLL
   STA PPUSCROLL
+
+  debugOut {"New score ", fDec8(score), fDec8(score+1), fDec8(score+2), fDec8(score+3), fDec8(score+4), "."}
+
   RTS
 .endproc
 
