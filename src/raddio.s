@@ -584,6 +584,10 @@ skip_play:
   LDA notes_queue+Note::release_delay, X
   BNE @exit_loop
 
+  ; skip invisible notes
+  LDA notes_queue+Note::columns, X
+  BEQ @next
+
   ; A := abs(ycoord - target_y)
   LDA notes_queue+Note::ycoord, X
   SEC
@@ -647,6 +651,10 @@ skip_play:
 @exit_score_carry_loop:
 
   debugOut {"New score ", fDec8(score), fDec8(score+1), fDec8(score+2), fDec8(score+3), fDec8(score+4), "."}
+
+  ; delete note
+  LDA #$00
+  STA notes_queue+Note::columns, Y
 
   RTS
 .endproc
