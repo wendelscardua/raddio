@@ -60,6 +60,8 @@ def main
 
     last_frame = 0
     error = 0
+    total_notes = 0
+
     File.open(output_filename, 'wb') do |output|
       while (input_line = input_queue.shift)
         (tracker_frame, tracker_row, mask) = input_line.split(/ /)
@@ -100,10 +102,14 @@ def main
         output.putc delay.to_i
         output.putc mask
 
+        total_notes += 1 if mask != '0000'
+
         last_frame = target_frame
       end
       output.putc 0
     end
+
+    puts "Total notes emmited #{total_notes}"
   end
 end
 
