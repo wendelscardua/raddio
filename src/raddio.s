@@ -721,14 +721,15 @@ skip_play:
 @score_carry_loop:
   LDA score, X
   CMP #10
-  BCC @exit_score_carry_loop
+  BCC @next_digit
   SEC
   SBC #10
   STA score, X
-  DEX
-  INC score, X
+  INC score-1, X
   JMP @score_carry_loop
-@exit_score_carry_loop:
+@next_digit:
+  DEX
+  BPL @score_carry_loop
 
   debugOut {"New score ", fDec8(score), fDec8(score+1), fDec8(score+2), fDec8(score+3), fDec8(score+4), "."}
 
