@@ -108,6 +108,7 @@ temp_y: .res 1
 dy: .res 1
 min_dy: .res 1
 input_columns: .res 1
+note_columns: .res 1
 
 nmis: .res 1
 old_nmis: .res 1
@@ -654,6 +655,13 @@ skip_play:
 
   debugOut {"Position match, delta = ", fDec8(min_dy), "."}
 
+  LDA notes_queue+Note::columns, Y
+  STA note_columns
+
+  ; delete note
+  LDA #$00
+  STA notes_queue+Note::columns, Y ; now Y is unused here
+
   ;;; match, score based on how close it was
 
   ; get score per half dy index
@@ -693,7 +701,7 @@ skip_play:
   STA input_columns
 :
   LDA input_columns
-  CMP notes_queue+Note::columns, Y
+  CMP note_columns
 
   BEQ @good_match
 @bad_match:
@@ -712,6 +720,16 @@ skip_play:
   JSR decrease_stars
 @load_good_score:
   LDA score_per_half_dy, X
+
+  LDY stars
+  CPY #3
+  BCC :+
+  ASL ; stars >= 3 -> double score
+:
+  CPY #5
+  BNE :+
+  ASL ; stars = 5 -> double score
+:
 
 @add_score:
   CLC
@@ -732,10 +750,6 @@ skip_play:
   BPL @score_carry_loop
 
   debugOut {"New score ", fDec8(score), fDec8(score+1), fDec8(score+2), fDec8(score+3), fDec8(score+4), "."}
-
-  ; delete note
-  LDA #$00
-  STA notes_queue+Note::columns, Y
 
   RTS
 .endproc
