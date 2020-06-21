@@ -68,7 +68,6 @@ at_the_price_of_oblivion_music_data:
 ; New song
 @song0ch0:
 	.byte $fb,$06
-@song0ch0loop:
 @ref0:
 	.byte $86,$40,$9d,$38,$8d,$32,$8d
 @ref1:
@@ -251,16 +250,16 @@ at_the_price_of_oblivion_music_data:
 	.byte $42,$9d,$4a,$9d
 @ref81:
 	.byte $00,$bd
+@song0ch0loop:
+@ref82:
+	.byte $81
 	.byte $fd
 	.word @song0ch0loop
 
 ; New song
 @song0ch1:
-@song0ch1loop:
-@ref82:
-	.byte $00,$bd
 @ref83:
-	.byte $bf
+	.byte $00,$bd
 @ref84:
 	.byte $bf
 @ref85:
@@ -274,172 +273,172 @@ at_the_price_of_oblivion_music_data:
 @ref89:
 	.byte $bf
 @ref90:
-	.byte $88,$02,$bd
-@ref91:
-	.byte $02,$bd
-@ref92:
-	.byte $08,$bd
-@ref93:
-	.byte $0c,$9d,$12,$9d
-@ref94:
-	.byte $02,$bd
-@ref95:
 	.byte $bf
-@ref96:
+@ref91:
+	.byte $88,$02,$bd
+@ref92:
+	.byte $02,$bd
+@ref93:
 	.byte $08,$bd
-@ref97:
+@ref94:
 	.byte $0c,$9d,$12,$9d
+@ref95:
+	.byte $02,$bd
+@ref96:
+	.byte $bf
+@ref97:
+	.byte $08,$bd
 @ref98:
-	.byte $02,$9d
+	.byte $0c,$9d,$12,$9d
 @ref99:
-	.byte $9f
+	.byte $02,$9d
 @ref100:
-	.byte $90,$40,$8d,$42,$8d,$3c,$8d,$40,$8d
+	.byte $9f
 @ref101:
+	.byte $90,$40,$8d,$42,$8d,$3c,$8d,$40,$8d
+@ref102:
 	.byte $40,$8d,$42,$8d,$3c,$8d,$40,$8d
 	.byte $ff,$08
-	.word @ref101
-@ref103:
+	.word @ref102
+@ref104:
 	.byte $46,$8d,$42,$8d,$40,$8d,$38,$8d
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref103
-@ref108:
-	.byte $4a,$9d,$50,$9d
+	.word @ref104
 @ref109:
-	.byte $4a,$9d,$50,$8d,$4e,$8d
+	.byte $4a,$9d,$50,$9d
 @ref110:
+	.byte $4a,$9d,$50,$8d,$4e,$8d
+@ref111:
 	.byte $4a,$9d,$50,$9d
 	.byte $ff,$06
-	.word @ref109
-@ref112:
+	.word @ref110
+@ref113:
 	.byte $4a,$9d,$50,$9d
 	.byte $ff,$06
-	.word @ref109
-@ref114:
+	.word @ref110
+@ref115:
 	.byte $4a,$9d,$50,$9d
 	.byte $ff,$06
-	.word @ref109
+	.word @ref110
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref103
+	.word @ref104
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref103
-@ref124:
+	.word @ref104
+@ref125:
 	.byte $4a,$9d,$50,$9d
 	.byte $ff,$06
-	.word @ref109
-@ref126:
+	.word @ref110
+@ref127:
 	.byte $4a,$9d,$50,$9d
 	.byte $ff,$06
-	.word @ref109
-@ref128:
+	.word @ref110
+@ref129:
 	.byte $4a,$9d,$50,$9d
 	.byte $ff,$06
-	.word @ref109
-@ref130:
+	.word @ref110
+@ref131:
 	.byte $4b,$00,$99,$50,$9d
 	.byte $ff,$06
-	.word @ref109
+	.word @ref110
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref103
+	.word @ref104
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref103
-@ref140:
-	.byte $3c,$bd
+	.word @ref104
 @ref141:
-	.byte $40,$bd
+	.byte $3c,$bd
 @ref142:
-	.byte $46,$bd
+	.byte $40,$bd
 @ref143:
+	.byte $46,$bd
+@ref144:
 	.byte $40,$bd
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref101
+	.word @ref102
 	.byte $ff,$08
-	.word @ref101
-@ref148:
-	.byte $40,$9d,$3c,$9d
+	.word @ref102
 @ref149:
-	.byte $42,$9d,$40,$9d
+	.byte $40,$9d,$3c,$9d
 @ref150:
 	.byte $42,$9d,$40,$9d
 @ref151:
-	.byte $bf
+	.byte $42,$9d,$40,$9d
 @ref152:
+	.byte $bf
+@ref153:
 	.byte $94,$32,$87,$00,$38,$87,$00,$40,$83,$00,$3c,$87,$00,$36,$87,$00
 	.byte $3c,$83,$00
-@ref153:
+@ref154:
 	.byte $3c,$87,$00,$40,$87,$00,$42,$83,$00,$40,$83,$00,$3c,$83,$00,$38
 	.byte $83,$00,$36,$83,$00
-@ref154:
+@ref155:
 	.byte $32,$87,$00,$36,$87,$00,$38,$83,$00,$36,$83,$00,$32,$83,$00,$2e
 	.byte $83,$00,$36,$83,$00
-@ref155:
+@ref156:
 	.byte $32,$85,$2e,$00,$32,$85,$2e,$00,$32,$00,$2e,$00,$32,$00,$32,$00
 	.byte $36,$00,$36,$00,$38,$00,$38,$00,$3c,$00,$3c,$00
-@ref156:
+@ref157:
 	.byte $32,$87,$00,$38,$87,$00,$40,$83,$00,$3c,$87,$00,$36,$87,$00,$3c
 	.byte $83,$00
 	.byte $ff,$15
-	.word @ref153
-@ref158:
+	.word @ref154
+@ref159:
 	.byte $32,$87,$00,$36,$87,$00,$38,$83,$00,$36,$87,$00,$3c,$87,$00,$36
 	.byte $83,$00
-@ref159:
+@ref160:
 	.byte $38,$85,$36,$00,$38,$85,$36,$00,$38,$00,$38,$00,$38,$00,$38,$00
 	.byte $38,$00,$38,$00,$38,$00,$38,$00,$38,$00,$38,$00
-@ref160:
-	.byte $90,$50,$9d,$58,$9d
 @ref161:
-	.byte $50,$9d,$58,$8d,$54,$8d
+	.byte $90,$50,$9d,$58,$9d
 @ref162:
-	.byte $50,$9d,$58,$9d
+	.byte $50,$9d,$58,$8d,$54,$8d
 @ref163:
+	.byte $50,$9d,$58,$9d
+@ref164:
 	.byte $00,$bd
+@song0ch1loop:
+@ref165:
+	.byte $81
 	.byte $fd
 	.word @song0ch1loop
 
 ; New song
 @song0ch2:
-@song0ch2loop:
-@ref164:
-	.byte $00,$bd
-@ref165:
-	.byte $bf
 @ref166:
-	.byte $bf
+	.byte $00,$bd
 @ref167:
 	.byte $bf
 @ref168:
@@ -467,267 +466,267 @@ at_the_price_of_oblivion_music_data:
 @ref179:
 	.byte $bf
 @ref180:
-	.byte $8c,$1a,$9d
+	.byte $bf
 @ref181:
-	.byte $9f
+	.byte $bf
 @ref182:
+	.byte $8c,$1a,$9d
+@ref183:
+	.byte $9f
+@ref184:
 	.byte $1a,$00,$1a,$00,$33,$1a,$00,$1a,$00,$1a,$00,$33,$1a,$00,$1a,$00
 	.byte $1a,$00,$33,$1a,$00,$1a,$00,$1a,$00,$33,$1a,$00
 	.byte $ff,$1c
-	.word @ref182
-@ref184:
+	.word @ref184
+@ref186:
 	.byte $20,$00,$20,$00,$39,$20,$00,$20,$00,$20,$00,$39,$20,$00,$20,$00
 	.byte $20,$00,$39,$20,$00,$20,$00,$20,$00,$39,$20,$00
-@ref185:
+@ref187:
 	.byte $24,$00,$24,$00,$3d,$24,$00,$24,$00,$24,$00,$3d,$24,$00,$12,$00
 	.byte $12,$00,$2b,$12,$00,$12,$00,$12,$00,$2b,$12,$00
 	.byte $ff,$1c
-	.word @ref182
-	.byte $ff,$1c
-	.word @ref182
+	.word @ref184
 	.byte $ff,$1c
 	.word @ref184
 	.byte $ff,$1c
-	.word @ref185
-@ref190:
+	.word @ref186
+	.byte $ff,$1c
+	.word @ref187
+@ref192:
 	.byte $12,$00,$12,$00,$2b,$12,$00,$12,$00,$12,$00,$2b,$12,$00,$1a,$00
 	.byte $1a,$00,$33,$1a,$00,$1a,$00,$1a,$00,$33,$1a,$00
-@ref191:
+@ref193:
 	.byte $12,$00,$12,$00,$2b,$12,$00,$12,$00,$12,$00,$2b,$12,$00,$20,$00
 	.byte $20,$00,$39,$20,$00,$16,$00,$16,$00,$2f,$16,$00
 	.byte $ff,$1c
-	.word @ref190
+	.word @ref192
 	.byte $ff,$1c
-	.word @ref191
+	.word @ref193
 	.byte $ff,$1c
-	.word @ref190
+	.word @ref192
 	.byte $ff,$1c
-	.word @ref191
+	.word @ref193
 	.byte $ff,$1c
-	.word @ref190
+	.word @ref192
 	.byte $ff,$1c
-	.word @ref191
-	.byte $ff,$1c
-	.word @ref182
-	.byte $ff,$1c
-	.word @ref182
+	.word @ref193
 	.byte $ff,$1c
 	.word @ref184
 	.byte $ff,$1c
-	.word @ref185
+	.word @ref184
 	.byte $ff,$1c
-	.word @ref182
+	.word @ref186
 	.byte $ff,$1c
-	.word @ref182
+	.word @ref187
 	.byte $ff,$1c
 	.word @ref184
 	.byte $ff,$1c
-	.word @ref185
+	.word @ref184
 	.byte $ff,$1c
-	.word @ref190
+	.word @ref186
 	.byte $ff,$1c
-	.word @ref191
+	.word @ref187
 	.byte $ff,$1c
-	.word @ref190
+	.word @ref192
 	.byte $ff,$1c
-	.word @ref191
+	.word @ref193
 	.byte $ff,$1c
-	.word @ref190
+	.word @ref192
 	.byte $ff,$1c
-	.word @ref191
+	.word @ref193
 	.byte $ff,$1c
-	.word @ref190
+	.word @ref192
 	.byte $ff,$1c
-	.word @ref191
-@ref214:
-	.byte $1a,$bd
-@ref215:
-	.byte $bf
+	.word @ref193
+	.byte $ff,$1c
+	.word @ref192
+	.byte $ff,$1c
+	.word @ref193
 @ref216:
-	.byte $20,$bd
+	.byte $1a,$bd
 @ref217:
-	.byte $24,$9d,$2a,$9d
+	.byte $bf
 @ref218:
-	.byte $1a,$bd
-@ref219:
-	.byte $bf
-@ref220:
 	.byte $20,$bd
-@ref221:
+@ref219:
 	.byte $24,$9d,$2a,$9d
-@ref222:
-	.byte $32,$bd
-@ref223:
-	.byte $bf
-@ref224:
+@ref220:
 	.byte $1a,$bd
+@ref221:
+	.byte $bf
+@ref222:
+	.byte $20,$bd
+@ref223:
+	.byte $24,$9d,$2a,$9d
+@ref224:
+	.byte $32,$bd
 @ref225:
 	.byte $bf
+@ref226:
+	.byte $1a,$bd
+@ref227:
+	.byte $bf
 	.byte $ff,$1c
-	.word @ref182
+	.word @ref184
 	.byte $ff,$1c
-	.word @ref182
+	.word @ref184
 	.byte $ff,$1c
-	.word @ref182
+	.word @ref184
 	.byte $ff,$1c
-	.word @ref182
-@ref230:
+	.word @ref184
+@ref232:
 	.byte $1a,$00,$1a,$00,$33,$1a,$00,$1a,$00,$1a,$00,$33,$1a,$00,$16,$00
 	.byte $16,$00,$2f,$16,$00,$16,$00,$16,$00,$2f,$16,$00
-@ref231:
+@ref233:
 	.byte $24,$00,$24,$00,$3d,$24,$00,$24,$00,$24,$00,$3d,$24,$00,$1a,$00
 	.byte $1a,$00,$33,$1a,$00,$1a,$00,$1a,$00,$33,$1a,$00
-@ref232:
+@ref234:
 	.byte $12,$00,$12,$00,$2b,$12,$00,$12,$00,$12,$00,$2b,$12,$00,$10,$00
 	.byte $10,$00,$29,$10,$00,$10,$00,$10,$00,$29,$10,$00
 	.byte $ff,$1c
-	.word @ref182
-	.byte $ff,$1c
-	.word @ref230
-	.byte $ff,$1c
-	.word @ref231
+	.word @ref184
 	.byte $ff,$1c
 	.word @ref232
 	.byte $ff,$1c
-	.word @ref182
+	.word @ref233
 	.byte $ff,$1c
-	.word @ref230
+	.word @ref234
 	.byte $ff,$1c
-	.word @ref231
+	.word @ref184
 	.byte $ff,$1c
 	.word @ref232
 	.byte $ff,$1c
-	.word @ref182
-@ref242:
-	.byte $12,$9d,$1a,$9d
-@ref243:
-	.byte $12,$9d,$20,$8d,$16,$8d
+	.word @ref233
+	.byte $ff,$1c
+	.word @ref234
+	.byte $ff,$1c
+	.word @ref184
 @ref244:
 	.byte $12,$9d,$1a,$9d
 @ref245:
+	.byte $12,$9d,$20,$8d,$16,$8d
+@ref246:
+	.byte $12,$9d,$1a,$9d
+@ref247:
 	.byte $00,$bd
+@song0ch2loop:
+@ref248:
+	.byte $81
 	.byte $fd
 	.word @song0ch2loop
 
 ; New song
 @song0ch3:
-@song0ch3loop:
-@ref246:
+@ref249:
 	.byte $80,$1a,$8d,$1a,$8d,$84,$12,$8d,$80,$1a,$8d
-@ref247:
+@ref250:
 	.byte $1a,$8d,$1a,$8d,$84,$12,$8d,$80,$1a,$8d
 	.byte $ff,$08
-	.word @ref247
+	.word @ref250
 	.byte $ff,$08
-	.word @ref247
+	.word @ref250
 	.byte $ff,$08
-	.word @ref247
+	.word @ref250
 	.byte $ff,$08
-	.word @ref247
+	.word @ref250
 	.byte $ff,$08
-	.word @ref247
+	.word @ref250
 	.byte $ff,$08
-	.word @ref247
+	.word @ref250
 	.byte $ff,$08
-	.word @ref247
+	.word @ref250
 	.byte $ff,$08
-	.word @ref247
+	.word @ref250
 	.byte $ff,$08
-	.word @ref247
+	.word @ref250
 	.byte $ff,$08
-	.word @ref247
+	.word @ref250
 	.byte $ff,$08
-	.word @ref247
+	.word @ref250
 	.byte $ff,$08
-	.word @ref247
+	.word @ref250
 	.byte $ff,$08
-	.word @ref247
-@ref261:
+	.word @ref250
+@ref264:
 	.byte $84,$13,$82,$08,$08,$05,$84,$13,$82,$08,$08,$05,$84,$13,$82,$08
 	.byte $08,$05,$84,$13,$82,$08,$08,$05,$84,$13,$82,$08,$08,$84,$12,$82
 	.byte $08,$08,$08
-@ref262:
+@ref265:
 	.byte $84,$12,$9d
-@ref263:
+@ref266:
 	.byte $9f
-@ref264:
+@ref267:
 	.byte $82,$21,$80,$19,$84,$13,$80,$19,$82,$21,$80,$19,$84,$13,$80,$19
 	.byte $82,$21,$80,$19,$84,$13,$80,$19,$82,$21,$80,$19,$84,$13,$12,$81
 	.byte $ff,$11
-	.word @ref264
+	.word @ref267
 	.byte $ff,$11
-	.word @ref264
-@ref267:
+	.word @ref267
+@ref270:
 	.byte $82,$21,$80,$19,$84,$13,$80,$19,$82,$21,$80,$19,$84,$13,$80,$19
 	.byte $82,$13,$08,$08,$05,$13,$08,$08,$05,$12,$08,$08,$08
-@ref268:
+@ref271:
 	.byte $84,$13,$80,$19,$84,$13,$80,$19,$82,$21,$80,$19,$84,$13,$80,$19
 	.byte $82,$21,$80,$19,$84,$13,$80,$19,$82,$21,$80,$19,$84,$13,$12,$81
 	.byte $ff,$11
-	.word @ref264
-	.byte $ff,$11
-	.word @ref264
-	.byte $ff,$14
 	.word @ref267
 	.byte $ff,$11
-	.word @ref268
-	.byte $ff,$11
-	.word @ref264
-	.byte $ff,$11
-	.word @ref264
+	.word @ref267
 	.byte $ff,$14
+	.word @ref270
+	.byte $ff,$11
+	.word @ref271
+	.byte $ff,$11
 	.word @ref267
 	.byte $ff,$11
-	.word @ref268
+	.word @ref267
+	.byte $ff,$14
+	.word @ref270
 	.byte $ff,$11
-	.word @ref264
+	.word @ref271
 	.byte $ff,$11
-	.word @ref264
-@ref279:
+	.word @ref267
+	.byte $ff,$11
+	.word @ref267
+@ref282:
 	.byte $13,$82,$08,$08,$05,$84,$13,$82,$08,$08,$05,$84,$13,$82,$08,$08
 	.byte $05,$84,$13,$82,$08,$08,$05,$84,$13,$82,$08,$08,$84,$12,$82,$08
 	.byte $08,$08
-@ref280:
+@ref283:
 	.byte $21,$80,$19,$84,$13,$80,$19,$82,$21,$80,$19,$84,$13,$80,$19,$82
 	.byte $21,$80,$19,$84,$13,$80,$19,$82,$21,$80,$19,$84,$13,$12,$81
 	.byte $ff,$11
-	.word @ref264
-	.byte $ff,$11
-	.word @ref264
-	.byte $ff,$14
 	.word @ref267
 	.byte $ff,$11
-	.word @ref268
-	.byte $ff,$11
-	.word @ref264
-	.byte $ff,$11
-	.word @ref264
+	.word @ref267
 	.byte $ff,$14
+	.word @ref270
+	.byte $ff,$11
+	.word @ref271
+	.byte $ff,$11
 	.word @ref267
 	.byte $ff,$11
-	.word @ref268
-	.byte $ff,$11
-	.word @ref264
-	.byte $ff,$11
-	.word @ref264
+	.word @ref267
 	.byte $ff,$14
+	.word @ref270
+	.byte $ff,$11
+	.word @ref271
+	.byte $ff,$11
 	.word @ref267
 	.byte $ff,$11
-	.word @ref268
+	.word @ref267
+	.byte $ff,$14
+	.word @ref270
 	.byte $ff,$11
-	.word @ref264
+	.word @ref271
 	.byte $ff,$11
-	.word @ref264
-@ref295:
+	.word @ref267
+	.byte $ff,$11
+	.word @ref267
+@ref298:
 	.byte $13,$82,$08,$08,$05,$84,$13,$82,$08,$08,$05,$84,$13,$82,$08,$08
 	.byte $05,$84,$13,$82,$08,$08,$05,$84,$13,$82,$08,$08,$92,$1a,$82,$08
 	.byte $08,$08
-@ref296:
-	.byte $bf
-@ref297:
-	.byte $bf
-@ref298:
-	.byte $bf
 @ref299:
 	.byte $bf
 @ref300:
@@ -744,74 +743,74 @@ at_the_price_of_oblivion_music_data:
 	.byte $bf
 @ref306:
 	.byte $bf
-	.byte $ff,$17
-	.word @ref261
+@ref307:
+	.byte $bf
 @ref308:
+	.byte $bf
+@ref309:
+	.byte $bf
+	.byte $ff,$17
+	.word @ref264
+@ref311:
 	.byte $20,$80,$1e,$18,$1e,$84,$12,$80,$1e,$18,$1e,$82,$20,$80,$1e,$18
 	.byte $1e,$84,$12,$80,$1e,$18,$1e,$82,$20,$80,$1e,$18,$1e,$84,$12,$80
 	.byte $1e,$18,$1e,$82,$20,$80,$1e,$18,$1e,$84,$12,$80,$1e,$84,$12,$80
 	.byte $1e
-@ref309:
+@ref312:
 	.byte $82,$20,$80,$1e,$18,$1e,$84,$12,$80,$1e,$18,$1e,$82,$20,$80,$1e
 	.byte $18,$1e,$84,$12,$80,$1e,$18,$1e,$82,$20,$80,$1e,$18,$1e,$84,$12
 	.byte $80,$1e,$18,$1e,$82,$20,$80,$1e,$18,$1e,$84,$12,$80,$1e,$84,$12
 	.byte $80,$1e
 	.byte $ff,$20
-	.word @ref309
-@ref311:
+	.word @ref312
+@ref314:
 	.byte $82,$20,$80,$1e,$18,$1e,$84,$12,$80,$1e,$18,$1e,$82,$20,$80,$1e
 	.byte $18,$1e,$84,$12,$80,$1e,$18,$1e,$82,$12,$80,$1e,$82,$08,$08,$04
 	.byte $80,$1e,$82,$12,$80,$1e,$82,$08,$08,$04,$80,$1e,$82,$12,$08,$08
 	.byte $08
 	.byte $ff,$20
-	.word @ref308
+	.word @ref311
 	.byte $ff,$20
-	.word @ref309
+	.word @ref312
 	.byte $ff,$20
-	.word @ref309
-@ref315:
+	.word @ref312
+@ref318:
 	.byte $84,$12,$80,$1e,$82,$08,$08,$04,$80,$1e,$84,$12,$80,$1e,$82,$08
 	.byte $08,$04,$80,$1e,$84,$12,$80,$1e,$82,$08,$08,$04,$80,$1e,$84,$12
 	.byte $80,$1e,$82,$08,$08,$04,$80,$1e,$84,$12,$80,$1e,$82,$08,$08,$84
 	.byte $12,$82,$08,$08,$08
 	.byte $ff,$20
-	.word @ref308
+	.word @ref311
 	.byte $ff,$20
-	.word @ref309
+	.word @ref312
 	.byte $ff,$20
-	.word @ref309
+	.word @ref312
 	.byte $ff,$20
-	.word @ref315
+	.word @ref318
 	.byte $ff,$20
-	.word @ref308
+	.word @ref311
 	.byte $ff,$20
-	.word @ref309
+	.word @ref312
 	.byte $ff,$20
-	.word @ref309
+	.word @ref312
 	.byte $ff,$20
-	.word @ref315
-@ref324:
-	.byte $84,$12,$bd
-@ref325:
-	.byte $bf
-@ref326:
-	.byte $bf
+	.word @ref318
 @ref327:
-	.byte $bf
-	.byte $fd
-	.word @song0ch3loop
-
-; New song
-@song0ch4:
-@song0ch4loop:
+	.byte $84,$12,$bd
 @ref328:
 	.byte $bf
 @ref329:
 	.byte $bf
 @ref330:
 	.byte $bf
+@song0ch3loop:
 @ref331:
-	.byte $bf
+	.byte $81
+	.byte $fd
+	.word @song0ch3loop
+
+; New song
+@song0ch4:
 @ref332:
 	.byte $bf
 @ref333:
@@ -837,17 +836,17 @@ at_the_price_of_oblivion_music_data:
 @ref343:
 	.byte $bf
 @ref344:
-	.byte $9f
+	.byte $bf
 @ref345:
-	.byte $9f
+	.byte $bf
 @ref346:
 	.byte $bf
 @ref347:
 	.byte $bf
 @ref348:
-	.byte $bf
+	.byte $9f
 @ref349:
-	.byte $bf
+	.byte $9f
 @ref350:
 	.byte $bf
 @ref351:
@@ -968,5 +967,16 @@ at_the_price_of_oblivion_music_data:
 	.byte $bf
 @ref409:
 	.byte $bf
+@ref410:
+	.byte $bf
+@ref411:
+	.byte $bf
+@ref412:
+	.byte $bf
+@ref413:
+	.byte $bf
+@song0ch4loop:
+@ref414:
+	.byte $81
 	.byte $fd
 	.word @song0ch4loop
