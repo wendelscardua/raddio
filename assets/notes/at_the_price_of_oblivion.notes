@@ -1,10 +1,40 @@
 6 180
 
-#define G-3 0001
-#define D#3 0100
-#define C-3 1000
+#define F-2 1000
+#define G-2 0010
+#define G#2 0100
+#define A#2 0010
+#define B-2 0001
 
-00 00 G-3
+#define C-3 1000
+#define D-3 1000
+#define D#3 0100
+#define F-3 0010
+#define G-3 0001
+#define G#3 1000
+#define A#3 0010
+#define B-3 0001
+
+#define C-4 1000
+#define D-4 0100
+#define D#4 0010
+#define F-4 0100
+#define G-4 0001
+#define G#4 1000
+#define A#4 0100
+#define B-4 0001
+
+#define C-5 1000
+#define D-5 0100
+#define D#5 0010
+#define F-5 1000
+#define G-5 0001
+#define G#5 1000
+#define A#5 0100
+
+#define C-6 1000
+
+00 01 G-3
 00 10 D#3
 00 18 C-3
 00 20 F-3
@@ -57,6 +87,7 @@
 07 30 D-4
 
 08 00 C-4
+#endframe 1F
 
 09 00 G-4
 09 08 D#4
@@ -277,7 +308,6 @@
 18 20 G-4
 18 24 A#4
 18 28 C-5
-18 2C C-5
 18 2C D-5
 18 30 D#5
 18 34 F-5
@@ -440,4 +470,4 @@
 
 28 00 G#3
 28 10 C-4
-
+28 3F 0000
