@@ -239,6 +239,12 @@ clear_ram:
   LDA #%00011110  ; turn on screen
   STA PPUMASK
 
+  ; init FamiTone SFX
+  LDX #<sfx_data
+  LDY #>sfx_data
+  LDA #1
+  JSR FamiToneSfxInit
+
   JSR go_to_title
 
 forever:
@@ -410,11 +416,6 @@ exit:
   TAX
   LDA #1
   JSR FamiToneInit
-
-  LDX #<sfx_data
-  LDY #>sfx_data
-  LDA #1
-  JSR FamiToneSfxInit
 
   LDX selected_song
   LDA music_notes_data_pointers_l, X
