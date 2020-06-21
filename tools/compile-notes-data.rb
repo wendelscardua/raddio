@@ -64,10 +64,11 @@ def main
     last_frame = 0
     error = 0
     total_notes = 0
+    early_frame_end_discount = 0
 
     File.open(output_filename, 'wb') do |output|
       while (input_line = input_queue.shift)
-        (tracker_frame, tracker_row, mask) = input_line.split(/ /)
+        (tracker_frame, tracker_row, mask) = input_line.strip.split(/\s+/)
         if tracker_row == '='
           # then mask contains source tracker frame
           repeat_lines = frame_history[mask].map { |data| "#{tracker_frame} #{data[0]} #{data[1]}" }
@@ -78,17 +79,25 @@ def main
           MASK_ALIAS[tracker_row] = mask
           next
         end
+        if tracker_frame == '#endframe'
+          early_frame_end_discount += 0x40 - (tracker_row.to_i(16) + 1)
+          next
+        end
         (frame_history[tracker_frame] ||= []).push [tracker_row, mask]
         tracker_frame = tracker_frame.to_i(16)
         tracker_row = tracker_row.to_i(16)
-        mask = MASK_ALIAS.fetch(mask, mask).to_i(2)
-        raise "Invalid line #{input_line}" if mask.zero?
+        while MASK_ALIAS[mask]
+          mask = MASK_ALIAS[mask]
+        end
+        raise "Invalid line #{input_line}" if mask == '' || mask.nil?
 
-        target_frame = ((tracker_frame * 0x40 + tracker_row) * frames_per_row)
+        mask = mask.to_i(2)
+
+        target_frame = ((tracker_frame * 0x40 + tracker_row - early_frame_end_discount) * frames_per_row)
 
         delay = target_frame - last_frame
 
-        while delay > 60
+        while delay >= 60
           output.putc 60
           output.putc 0
           delay -= 60
@@ -107,10 +116,18 @@ def main
           delay += 1
         end
 
+        if delay.zero?
+          delay = 1
+          error = 1
+        end
+
         output.putc delay.to_i
         output.putc mask
 
-        total_notes += 1 if mask != '0000'
+        if mask != '0000'
+          total_notes += 1
+          puts "[#{total_notes}] #{input_line} = #{target_frame} #{mask}"
+        end
 
         last_frame = target_frame
       end
