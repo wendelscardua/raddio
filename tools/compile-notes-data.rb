@@ -18,6 +18,9 @@
 # Repeat command: frame_b = frame_a
 #  - causes frame_b to use the same notes as frame_a
 #
+# #define string note
+#  - creates a note alias
+#
 # Output binary format:
 # --------------------
 # delta-frame-count: .byte
@@ -37,7 +40,7 @@ MASK_ALIAS = {
   'r' => '0001',
   'ul' => '1100',
   'dr' => '0011'
-}.freeze
+}
 
 def main
   input_filename = ARGV[0]
@@ -71,10 +74,15 @@ def main
           input_queue.unshift(*repeat_lines)
           next
         end
+        if tracker_frame == '#define'
+          MASK_ALIAS[tracker_row] = mask
+          next
+        end
         (frame_history[tracker_frame] ||= []).push [tracker_row, mask]
         tracker_frame = tracker_frame.to_i(16)
         tracker_row = tracker_row.to_i(16)
         mask = MASK_ALIAS.fetch(mask, mask).to_i(2)
+        raise "Invalid line #{input_line}" if mask.zero?
 
         target_frame = ((tracker_frame * 0x40 + tracker_row) * frames_per_row)
 
