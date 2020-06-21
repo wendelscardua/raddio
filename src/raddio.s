@@ -923,6 +923,8 @@ note_4_sprite = metasprite_3_data
 strings:
         ; TODO put strings here if needed
 
+nametable_title: .incbin "../assets/nametables/title.rle"
+nametable_songs: .incbin "../assets/nametables/songs.rle"
 nametable_main: .incbin "../assets/nametables/main.rle"
 
 music_notes_data_pointers_l:
