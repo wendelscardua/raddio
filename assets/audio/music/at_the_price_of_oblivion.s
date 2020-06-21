@@ -4,7 +4,7 @@ at_the_price_of_oblivion_music_data:
 	.byte 1
 	.word @instruments
 	.word @samples-3
-	.word @song0ch0,@song0ch1,@song0ch2,@song0ch3,@song0ch4,409,341 ; New song
+	.word @song0ch0,@song0ch1,@song0ch2,@song0ch3,@song0ch4,368,307 ; New song
 
 @instruments:
 	.byte $30 ;instrument $00
@@ -21,6 +21,9 @@ at_the_price_of_oblivion_music_data:
 	.byte $00
 	.byte $30 ;instrument $04
 	.word @env4,@env0,@env0
+	.byte $00
+	.byte $70 ;instrument $05
+	.word @env8,@env0,@env0
 	.byte $00
 	.byte $30 ;instrument $06
 	.word @env1,@env0,@env0
@@ -56,7 +59,10 @@ at_the_price_of_oblivion_music_data:
 	.byte $cf,$04,$ce,$cd,$cc,$cb,$cb,$ca,$c9,$c9,$c8,$c7,$c7,$c6,$c6,$c5
 	.byte $c4,$c3,$02,$c2,$c1,$c1,$c0,$00,$16
 @env7:
-	.byte $c6,$c8,$cb,$cd,$ce,$cf,$06,$cf,$00,$07
+	.byte $c3,$c4,$c6,$c7,$c7,$c8,$06,$c8,$00,$07
+@env8:
+	.byte $ca,$04,$c9,$c9,$c8,$c7,$02,$c6,$c6,$c5,$02,$c4,$c4,$c3,$c3,$c2
+	.byte $02,$c1,$02,$c0,$00,$13
 
 
 ; New song
@@ -98,7 +104,7 @@ at_the_price_of_oblivion_music_data:
 @ref16:
 	.byte $4a,$9d
 @ref17:
-	.byte $9b,$8c,$4a,$50
+	.byte $9b,$8e,$4a,$50
 @ref18:
 	.byte $58,$8d,$50,$85,$4a,$85,$54,$8d,$4e,$8d
 @ref19:
@@ -132,7 +138,7 @@ at_the_price_of_oblivion_music_data:
 	.byte $ff,$10
 	.word @ref29
 @ref34:
-	.byte $90,$62,$95,$5f,$59,$62,$91,$5f,$59,$54,$81
+	.byte $92,$62,$95,$5f,$59,$62,$91,$5f,$59,$54,$81
 @ref35:
 	.byte $59,$5f,$59,$55,$59,$55,$51,$55,$4a,$85,$47,$4a,$85,$47,$4b,$4e
 	.byte $81
@@ -174,7 +180,7 @@ at_the_price_of_oblivion_music_data:
 	.byte $58,$54,$59,$5e,$58,$5f,$62,$5e,$63,$66,$62,$67,$68,$66,$69,$6c
 	.byte $68,$6d,$70,$6c,$71,$76,$70,$76,$81
 @ref50:
-	.byte $7a,$8d,$8e,$3c,$8d,$36,$8d,$38,$8d
+	.byte $7a,$8d,$90,$3c,$8d,$36,$8d,$38,$8d
 @ref51:
 	.byte $38,$8d,$3c,$8d,$36,$8d,$38,$8d
 	.byte $ff,$08
@@ -198,7 +204,7 @@ at_the_price_of_oblivion_music_data:
 @ref61:
 	.byte $32,$bd
 @ref62:
-	.byte $8c,$62,$85,$66,$85,$62,$85,$68,$85,$62,$85,$66,$85,$62,$85,$60
+	.byte $8a,$62,$85,$66,$85,$62,$85,$68,$85,$62,$85,$66,$85,$62,$85,$60
 	.byte $85
 @ref63:
 	.byte $62,$85,$66,$85,$62,$85,$68,$85,$5e,$85,$68,$85,$66,$85,$5e,$85
@@ -215,7 +221,7 @@ at_the_price_of_oblivion_music_data:
 @ref69:
 	.byte $68,$85,$62,$85,$58,$85,$62,$85,$68,$85,$62,$85,$70,$85,$68,$85
 @ref70:
-	.byte $92,$28,$87,$00,$32,$87,$00,$38,$83,$00,$36,$87,$00,$2e,$87,$00
+	.byte $94,$28,$87,$00,$32,$87,$00,$38,$83,$00,$36,$87,$00,$2e,$87,$00
 	.byte $36,$83,$00
 @ref71:
 	.byte $36,$87,$00,$38,$87,$00,$3c,$83,$00,$38,$83,$00,$36,$83,$00,$32
@@ -238,7 +244,7 @@ at_the_price_of_oblivion_music_data:
 	.byte $32,$85,$2e,$00,$32,$85,$2e,$00,$32,$00,$32,$00,$32,$00,$32,$00
 	.byte $32,$00,$32,$00,$32,$00,$32,$00,$32,$00,$32,$00
 @ref78:
-	.byte $8e,$42,$9d,$4a,$9d
+	.byte $90,$42,$9d,$4a,$9d
 @ref79:
 	.byte $42,$9d,$50,$8d,$4e,$8d
 @ref80:
@@ -288,7 +294,7 @@ at_the_price_of_oblivion_music_data:
 @ref99:
 	.byte $9f
 @ref100:
-	.byte $8e,$40,$8d,$42,$8d,$3c,$8d,$40,$8d
+	.byte $90,$40,$8d,$42,$8d,$3c,$8d,$40,$8d
 @ref101:
 	.byte $40,$8d,$42,$8d,$3c,$8d,$40,$8d
 	.byte $ff,$08
@@ -392,7 +398,7 @@ at_the_price_of_oblivion_music_data:
 @ref151:
 	.byte $bf
 @ref152:
-	.byte $92,$32,$87,$00,$38,$87,$00,$40,$83,$00,$3c,$87,$00,$36,$87,$00
+	.byte $94,$32,$87,$00,$38,$87,$00,$40,$83,$00,$3c,$87,$00,$36,$87,$00
 	.byte $3c,$83,$00
 @ref153:
 	.byte $3c,$87,$00,$40,$87,$00,$42,$83,$00,$40,$83,$00,$3c,$83,$00,$38
@@ -415,7 +421,7 @@ at_the_price_of_oblivion_music_data:
 	.byte $38,$85,$36,$00,$38,$85,$36,$00,$38,$00,$38,$00,$38,$00,$38,$00
 	.byte $38,$00,$38,$00,$38,$00,$38,$00,$38,$00,$38,$00
 @ref160:
-	.byte $8e,$50,$9d,$58,$9d
+	.byte $90,$50,$9d,$58,$9d
 @ref161:
 	.byte $50,$9d,$58,$8d,$54,$8d
 @ref162:
@@ -461,7 +467,7 @@ at_the_price_of_oblivion_music_data:
 @ref179:
 	.byte $bf
 @ref180:
-	.byte $8a,$1a,$9d
+	.byte $8c,$1a,$9d
 @ref181:
 	.byte $9f
 @ref182:
@@ -714,7 +720,7 @@ at_the_price_of_oblivion_music_data:
 	.word @ref264
 @ref295:
 	.byte $13,$82,$08,$08,$05,$84,$13,$82,$08,$08,$05,$84,$13,$82,$08,$08
-	.byte $05,$84,$13,$82,$08,$08,$05,$84,$13,$82,$08,$08,$90,$1a,$82,$08
+	.byte $05,$84,$13,$82,$08,$08,$05,$84,$13,$82,$08,$08,$92,$1a,$82,$08
 	.byte $08,$08
 @ref296:
 	.byte $bf
