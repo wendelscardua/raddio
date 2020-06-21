@@ -497,6 +497,79 @@ exit_loop:
   RTS
 .endproc
 
+.proc finish_song
+  JSR FamiToneMusicStop
+
+  LDA #game_states::song_finished
+  STA game_state
+
+
+  LDA #$00
+  STA PPUCTRL ; disable NMI
+  STA PPUMASK ; disable rendering
+
+  LDA PPUSTATUS
+  LDA #$20
+  STA PPUADDR
+  LDA #$00
+  STA PPUADDR
+
+  LDA #<nametable_finished
+  STA rle_ptr
+  LDA #>nametable_finished
+  STA rle_ptr+1
+  JSR unrle
+
+  LDA PPUSTATUS
+  LDA #$23
+  STA PPUADDR
+  LDA #$69
+  STA PPUADDR
+
+  LDA score
+  STA PPUDATA
+  LDA score+1
+  STA PPUDATA
+  LDA score+2
+  STA PPUDATA
+  LDA score+3
+  STA PPUDATA
+  LDA score+4
+  STA PPUDATA
+
+  LDA #$23
+  STA PPUADDR
+  LDA #$72
+  STA PPUADDR
+
+  LDX #$00
+  LDA #$64 ; filled star tile
+:
+  CPX stars
+  BEQ :+
+  STA PPUDATA
+  INX
+  JMP :-
+:
+  LDA #$6A ; empty star tile
+:
+  CPX #5
+  BEQ :+
+  STA PPUDATA
+  INX
+  JMP :-
+:
+
+  VBLANK
+
+  LDA #%10010000  ; turn on NMIs, sprites use first pattern table
+  STA PPUCTRL
+  LDA #%00011110  ; turn on screen
+  STA PPUMASK
+
+  RTS
+.endproc
+
 .proc song_selection
   ; input
   JSR readjoy
@@ -615,9 +688,7 @@ skip_play:
 
   BNE update_notes
 
-  JSR FamiToneMusicStop
-  LDA #game_states::song_finished
-  STA game_state
+  JSR finish_song
   RTS
 
   update_notes:
@@ -982,6 +1053,7 @@ skip_play:
 .endproc
 
 .proc song_finished
+  JSR waiting_to_start
   RTS
 .endproc
 
@@ -1056,6 +1128,7 @@ strings:
 nametable_title: .incbin "../assets/nametables/title.rle"
 nametable_songs: .incbin "../assets/nametables/songs.rle"
 nametable_main: .incbin "../assets/nametables/main.rle"
+nametable_finished: .incbin "../assets/nametables/finished.rle"
 
 music_notes_data_pointers_l:
   .byte <music_notes_for_bad_apple
