@@ -16,7 +16,7 @@ FT_DPCM_OFF=$c000
 ; music/sfx constants
 .enum music_track
   BadApple = 0
-  AtThePriceOfOblivion = 2
+  AtThePriceOfOblivion = 1
 .endenum
 
 .enum sfx
@@ -234,29 +234,12 @@ clear_ram:
   ; load palettes
   JSR load_palettes
 
-  VBLANK
-
-  LDA PPUSTATUS
-  LDA #$20
-  STA PPUADDR
-  LDA #$00
-  STA PPUADDR
-
-  LDA #<nametable_main
-  STA rle_ptr
-  LDA #>nametable_main
-  STA rle_ptr+1
-  JSR unrle
-
   LDA #%10010000  ; turn on NMIs, sprites use first pattern table
   STA PPUCTRL
   LDA #%00011110  ; turn on screen
   STA PPUMASK
 
-  LDA #$00
-  STA selected_song
-
-  JSR play_selected_song
+  JSR go_to_title
 
 forever:
   LDA nmis
@@ -366,7 +349,60 @@ exit:
   RTS
 .endproc
 
+.proc go_to_title
+  LDA #game_states::waiting_to_start
+  STA game_state
+
+  LDA #$00
+  STA PPUCTRL ; disable NMI
+  STA PPUMASK ; disable rendering
+
+  LDA PPUSTATUS
+  LDA #$20
+  STA PPUADDR
+  LDA #$00
+  STA PPUADDR
+
+  LDA #<nametable_title
+  STA rle_ptr
+  LDA #>nametable_title
+  STA rle_ptr+1
+  JSR unrle
+
+  VBLANK
+
+  LDA #%10010000  ; turn on NMIs, sprites use first pattern table
+  STA PPUCTRL
+  LDA #%00011110  ; turn on screen
+  STA PPUMASK
+
+  RTS
+.endproc
+
 .proc play_selected_song
+  LDA #$00
+  STA PPUCTRL ; disable NMI
+  STA PPUMASK ; disable rendering
+
+  LDA PPUSTATUS
+  LDA #$20
+  STA PPUADDR
+  LDA #$00
+  STA PPUADDR
+
+  LDA #<nametable_main
+  STA rle_ptr
+  LDA #>nametable_main
+  STA rle_ptr+1
+  JSR unrle
+
+  VBLANK
+
+  LDA #%10010000  ; turn on NMIs, sprites use first pattern table
+  STA PPUCTRL
+  LDA #%00011110  ; turn on screen
+  STA PPUMASK
+
   LDX selected_song
   LDA music_data_h, X
   TAY
@@ -419,10 +455,104 @@ exit_loop:
 .endproc
 
 .proc waiting_to_start
+  JSR readjoy
+  LDA pressed_buttons
+  AND #BUTTON_START
+  BEQ :+
+  JSR go_to_song_selection
+:
+  RTS
+.endproc
+
+.proc go_to_song_selection
+  LDA #game_states::song_selection
+  STA game_state
+
+  LDA #music_track::BadApple
+  STA selected_song
+
+  LDA #$00
+  STA PPUCTRL ; disable NMI
+  STA PPUMASK ; disable rendering
+
+  LDA PPUSTATUS
+  LDA #$20
+  STA PPUADDR
+  LDA #$00
+  STA PPUADDR
+
+  LDA #<nametable_songs
+  STA rle_ptr
+  LDA #>nametable_songs
+  STA rle_ptr+1
+  JSR unrle
+
+  VBLANK
+
+  LDA #%10010000  ; turn on NMIs, sprites use first pattern table
+  STA PPUCTRL
+  LDA #%00011110  ; turn on screen
+  STA PPUMASK
+
   RTS
 .endproc
 
 .proc song_selection
+  ; input
+  JSR readjoy
+
+  LDA pressed_buttons
+  AND #BUTTON_UP
+  BEQ :+
+  LDA #music_track::AtThePriceOfOblivion
+  STA selected_song
+:
+  LDA pressed_buttons
+  AND #BUTTON_DOWN
+  BEQ :+
+  LDA #music_track::BadApple
+  STA selected_song
+:
+  LDA pressed_buttons
+  AND #(BUTTON_START | BUTTON_SELECT | BUTTON_A)
+  BEQ :+
+  JSR play_selected_song
+  RTS
+:
+
+  ; draw cursor
+  LDA #00
+  STA sprite_counter
+
+  LDA nmis
+  AND #%10000
+  CLC
+  ADC #$74
+  STA temp_y
+
+  LDA #$90
+  STA temp_x
+
+  LDA selected_song
+  CMP #music_track::BadApple
+
+  BNE @atpo
+@bad_apple:
+  LDA #<note_3_sprite
+  STA addr_ptr
+  LDA #>note_3_sprite
+  STA addr_ptr+1
+  JMP @draw
+@atpo:
+  LDA #<note_2_sprite
+  STA addr_ptr
+  LDA #>note_2_sprite
+  STA addr_ptr+1
+@draw:
+  save_regs
+  JSR display_metasprite
+  restore_regs
+
   RTS
 .endproc
 
@@ -785,8 +915,8 @@ skip_play:
 .proc draw_notes
   ;; draw current note on screen
   ;; input X = position in notes queue
+  ;;       A = y position
   STA temp_y
-  LDA #$80
 
   ; draw note 1
   LDA notes_queue+Note::columns, X
