@@ -1140,13 +1140,7 @@ music_notes_data_pointers_h:
 
 music_notes_for_bad_apple: .incbin "../assets/notes/bad_apple.notes.bin"
 
-music_notes_for_at_the_price_of_oblivion:
-  ; placeholder data
-  .byte $80, %1000
-  .byte $80, %0001
-  .byte $80, %1000
-  .byte $80, %0001
-  .byte $00, %1111
+music_notes_for_at_the_price_of_oblivion: .incbin "../assets/notes/at_the_price_of_oblivion.notes.bin"
 
 score_per_half_dy:
   ;      [--- great------]   [--- good ------]   [--- bad -------]   [--- miss -----------]

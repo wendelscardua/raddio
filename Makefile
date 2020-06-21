@@ -22,6 +22,7 @@ src/${PROJECT}.o: src/${PROJECT}.s src/constants.inc src/header.inc src/notes_qu
 	assets/metasprites.s assets/bg-palettes.pal assets/sprite-palettes.pal \
 	assets/nametables/main.rle \
 	assets/notes/bad_apple.notes.bin \
+	assets/notes/at_the_price_of_oblivion.notes.bin \
 	assets/graphics.chr
 	ca65 src/${PROJECT}.s ${CA65_FLAGS}
 
