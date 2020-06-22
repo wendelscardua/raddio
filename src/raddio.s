@@ -20,9 +20,9 @@ FT_DPCM_OFF=$c000
 .endenum
 
 .enum sfx
-  MoveCursor
-  SelectSong
-  BadNote
+  Confirm
+  Toggle
+  Success
 .endenum
 
 ; game config
@@ -239,6 +239,14 @@ clear_ram:
   LDA #%00011110  ; turn on screen
   STA PPUMASK
 
+  LDX #0
+  LDA music_data_h, X
+  TAY
+  LDA music_data_l, X
+  TAX
+  LDA #1
+  JSR FamiToneInit
+
   ; init FamiTone SFX
   LDX #<sfx_data
   LDY #>sfx_data
@@ -417,6 +425,12 @@ exit:
   LDA #1
   JSR FamiToneInit
 
+  ; init FamiTone SFX
+  LDX #<sfx_data
+  LDY #>sfx_data
+  LDA #1
+  JSR FamiToneSfxInit
+
   LDX selected_song
   LDA music_notes_data_pointers_l, X
   STA notes_source_ptr_l
@@ -460,6 +474,9 @@ exit_loop:
   LDA pressed_buttons
   AND #BUTTON_START
   BEQ :+
+  LDA #sfx::Confirm
+  LDX #FT_SFX_CH0
+  JSR FamiToneSfxPlay
   JSR go_to_song_selection
 :
   RTS
@@ -568,6 +585,10 @@ exit_loop:
   LDA #%00011110  ; turn on screen
   STA PPUMASK
 
+  LDA #sfx::Success
+  LDX #FT_SFX_CH2
+  JSR FamiToneSfxPlay
+
   RTS
 .endproc
 
@@ -580,16 +601,28 @@ exit_loop:
   BEQ :+
   LDA #music_track::AtThePriceOfOblivion
   STA selected_song
+  LDA #sfx::Toggle
+  LDX #FT_SFX_CH1
+  JSR FamiToneSfxPlay
 :
   LDA pressed_buttons
   AND #BUTTON_DOWN
   BEQ :+
   LDA #music_track::BadApple
   STA selected_song
+  LDA #sfx::Toggle
+  LDX #FT_SFX_CH1
+  JSR FamiToneSfxPlay
+
 :
   LDA pressed_buttons
   AND #(BUTTON_START | BUTTON_SELECT | BUTTON_A)
   BEQ :+
+
+  LDA #sfx::Confirm
+  LDX #FT_SFX_CH1
+  JSR FamiToneSfxPlay
+
   JSR play_selected_song
   RTS
 :
@@ -906,7 +939,7 @@ skip_play:
   CMP note_columns
 
   BEQ @good_match
-@bad_match:
+@bad_match:  
   LDA #$00
   STA stars
   STA star_charge
