@@ -839,8 +839,6 @@ skip_play:
   RTS
 :
 
-  debugOut {"Input detected"}
-
   ; guard clause
   LDY notes_queue_tail
 
@@ -898,8 +896,6 @@ skip_play:
   BNE :+
   RTS
 :
-
-  debugOut {"Position match, delta = ", fDec8(min_dy), "."}
 
   LDA notes_queue+Note::columns, Y
   STA note_columns
@@ -1002,8 +998,6 @@ skip_play:
 @next_digit:
   DEX
   BPL @score_carry_loop
-
-  debugOut {"New score ", fDec8(score), fDec8(score+1), fDec8(score+2), fDec8(score+3), fDec8(score+4), "."}
 
   RTS
 .endproc
