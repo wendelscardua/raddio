@@ -779,6 +779,10 @@ skip_play:
   draw_notes_loop:
   LDA #$00
   STA sprite_counter
+
+  ; draw grade
+  JSR draw_grade
+
   ; draw visible notes
   LDX notes_queue_head
 @loop:
@@ -798,9 +802,6 @@ skip_play:
   LDX #$00
   JMP @loop
 @exit_loop:
-
-  ; draw grade
-  JSR draw_grade
 
   ; erase old sprites
   LDX sprite_counter
@@ -1074,6 +1075,7 @@ skip_play:
   STA grade_y
   LDA #$10
   STA grade_counter
+  RTS
 .endproc
 
 .proc draw_notes
