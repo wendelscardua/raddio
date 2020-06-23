@@ -129,6 +129,12 @@ debug_x: .res 1
 debug_y: .res 1
 debug_a: .res 1
 
+grade_x: .res 1
+grade_y: .res 1
+grade_counter: .res 1
+grade_ptr_l: .res 1
+grade_ptr_h: .res 1
+
 .segment "BSS"
 ; non-zp RAM goes here
 
@@ -455,6 +461,7 @@ exit:
   STA score+4
   STA stars
   STA star_charge
+  STA grade_counter
   RTS
 .endproc
 
@@ -792,6 +799,9 @@ skip_play:
   JMP @loop
 @exit_loop:
 
+  ; draw grade
+  JSR draw_grade
+
   ; erase old sprites
   LDX sprite_counter
   LDA #$F0
@@ -943,9 +953,17 @@ skip_play:
   LDA #$00
   STA stars
   STA star_charge
+  save_regs
+  LDA #$00 ; miss grade
+  JSR trigger_grade
+  restore_regs
   LDA score_per_half_dy_when_wrong, X
   JMP @add_score
 @good_match:
+  save_regs
+  LDA grade_per_half_dy, X
+  JSR trigger_grade
+  restore_regs
   LDA starness_per_half_dy, X
   BEQ @decrease_stars
 @increase_stars:
@@ -1015,6 +1033,47 @@ skip_play:
   LDA #$00
   STA star_charge
   RTS
+.endproc
+
+.proc draw_grade
+  ;; draw current grade on screen
+  LDA grade_counter
+  BNE :+
+  RTS
+:
+  DEC grade_counter
+  DEC grade_y
+  LDA grade_y
+  STA temp_y
+  LDA grade_x
+  STA temp_x
+  LDA grade_ptr_l
+  STA addr_ptr
+  LDA grade_ptr_h
+  STA addr_ptr+1
+  save_regs
+  JSR display_metasprite
+  restore_regs
+
+  RTS
+.endproc
+
+.proc trigger_grade
+  ;; set up grade to appear for a few frames
+  ;; input X = grade index (0 = miss, 1 = bad, 2 = good, 3 = great)
+  ;; cobbles X
+  TAX
+  LDA grade_sprite_per_grade_l, X
+  STA grade_ptr_l
+  LDA grade_sprite_per_grade_h, X
+  STA grade_ptr_h
+  LDX note_columns
+  LDA grade_x_position_per_note, X
+  STA grade_x
+  LDA #(TARGET_Y - 16)
+  STA grade_y
+  LDA #$10
+  STA grade_counter
 .endproc
 
 .proc draw_notes
@@ -1155,6 +1214,10 @@ note_1_sprite = metasprite_0_data
 note_2_sprite = metasprite_1_data
 note_3_sprite = metasprite_2_data
 note_4_sprite = metasprite_3_data
+great_grade_sprite = metasprite_4_data
+good_grade_sprite = metasprite_5_data
+bad_grade_sprite = metasprite_6_data
+miss_grade_sprite = metasprite_7_data
 
 strings:
         ; TODO put strings here if needed
@@ -1188,6 +1251,40 @@ starness_per_half_dy:
   ;      [--- great------]   [--- good ------]   [--- bad -------]   [--- miss -----------]
   ;      00,  01,  02,  03,  04,  05,  06,  07,  08,  09,  0A,  0B,  0C,  0D,  0E , 0F,  10
   .byte $01, $01, $01, $01, $01, $01, $01, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00
+grade_per_half_dy:
+  ;      [--- great------]   [--- good ------]   [--- bad -------]   [--- miss -----------]
+  ;      00,  01,  02,  03,  04,  05,  06,  07,  08,  09,  0A,  0B,  0C,  0D,  0E , 0F,  10
+  .byte $03, $03, $03, $03, $02, $02, $02, $02, $01, $01, $01, $01, $00, $00, $00, $00, $00
+
+grade_sprite_per_grade_l:
+  .byte <miss_grade_sprite
+  .byte <bad_grade_sprite
+  .byte <good_grade_sprite
+  .byte <great_grade_sprite
+
+grade_sprite_per_grade_h:
+  .byte >miss_grade_sprite
+  .byte >bad_grade_sprite
+  .byte >good_grade_sprite
+  .byte >great_grade_sprite
+
+grade_x_position_per_note:
+  .byte $00 ; 0000
+  .byte $A8 ; 0001 - r
+  .byte $88 ; 0010 - d
+  .byte $00 ; 0011
+  .byte $68 ; 0100 - u
+  .byte $00 ; 0101
+  .byte $00 ; 0110
+  .byte $00 ; 0111
+  .byte $48 ; 1000 - l
+  .byte $00 ; 1001
+  .byte $00 ; 1010
+  .byte $00 ; 1011
+  .byte $00 ; 1100
+  .byte $00 ; 1101
+  .byte $00 ; 1110
+  .byte $00 ; 1111
 
 .segment "CHR"
 .incbin "../assets/graphics.chr"
